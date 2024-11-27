@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             InformationSeeder::class,
             ReviewSeeder::class,
+            ContactSeeder::class,
         ]);
 
         User::factory()->create([
