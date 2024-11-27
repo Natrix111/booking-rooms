@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 0 15px;
+    min-height: calc(100vh - 120px);
+}
+
+a {
+    text-decoration: none;
+    color: #5c5c5c;
+    transition: 0.3s;
+}
+
+a:hover {
+    color: #9dd458;
+}
+
+footer {
+    text-align: center;
+    color: #fff;
+    background-color: #1c1c1c;
+    margin-top: 40px;
+    padding: 30px 0;
+    width: 100%;
+}
