@@ -1,18 +1,21 @@
 <template>
   <header class="bg-blue-500 text-white py-4 px-10">
     <div class="mx-auto flex justify-between items-center">
-      <div>
+      <div class="flex-grow">
         <h1 class="text-xl font-bold">{{ mainIfo.title }}</h1>
         <p>{{ mainIfo.slogan }}</p>
       </div>
-      <div class="flex space-x-20">
-        <nav class="flex space-x-4">
+      <div class="flex space-x-20 flex-grow">
+        <nav class="flex space-x-4 flex-grow">
           <a href="/">Главная</a>
           <a href="/catalog">Каталог</a>
           <a href="#">Контакты</a>
         </nav>
+        <div class="flex space-x-4 ">
+          <a href="/">Вход</a>
+          <a href="/">Регистрация</a>
+        </div>
         <div class="flex space-x-4">
-          <a href="/">Вход / Регистрация</a>
           <p class="underline">{{ mainIfo.city }}</p>
         </div>
       </div>

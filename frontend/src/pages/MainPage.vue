@@ -24,7 +24,7 @@
               :key="review.id"
               class="bg-white p-4 hover:shadow-lg duration-300"
           >
-            <p>"{{ review.text }}"</p>
+            <p>"{{ review.content }}"</p>
             <p class="text-sm text-gray-500">— {{ review.author }}</p>
           </li>
         </ul>
@@ -65,10 +65,18 @@ const rooms = [
   { id: 2, name: "Люкс", price: 2500 },
 ]
 
-const reviews = [
-  { id: 1, text: "Прекрасное место!", author: "Анна" },
-  { id: 2, text: "Мой кот доволен!", author: "Иван" },
-]
+const reviews = ref([])
+
+const getReviews = async () => {
+  try {
+    const {data} = await axios.get('http://localhost:8080/api/reviews')
+    reviews.value = data
+        console.log(reviews)
+
+  }catch (error) {
+
+  }
+}
 
 const contacts = ref({})
 const socials = ref([])
@@ -76,7 +84,6 @@ const socials = ref([])
 const getContacts = async () => {
   try {
     const {data} = await axios.get('http://localhost:8080/api/contact')
-
     contacts.value = data[0]
 
     socials.value = Object.entries(JSON.parse(data[0].social_links))
@@ -87,6 +94,7 @@ const getContacts = async () => {
 
 onMounted(async () => {
   await getContacts()
+  await getReviews()
 })
 
 </script>
