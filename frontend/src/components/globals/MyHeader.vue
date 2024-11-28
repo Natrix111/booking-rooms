@@ -11,7 +11,10 @@
           <a href="/catalog">Каталог</a>
           <a href="#">Контакты</a>
         </nav>
-        <p class="underline">{{ headerData.city }}</p>
+        <div class="flex space-x-4">
+          <a href="/">Вход / Регистрация</a>
+          <p class="underline">{{ headerData.city }}</p>
+        </div>
       </div>
     </div>
   </header>
