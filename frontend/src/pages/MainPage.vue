@@ -2,18 +2,7 @@
   <main class="min-h-screen">
     <div class="mx-auto py-8">
       <section>
-        <h2>Популярные номера</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div
-              v-for="room in rooms"
-              :key="room.id"
-              class="bg-white p-4 hover:shadow-lg duration-300"
-          >
-            <img :src="room.image ? room.image : '/images/placeholder.jpg'" alt="Номер" class="w-full h-40 object-cover" />
-            <h3>{{ room.name }}</h3>
-            <p>Цена: {{ room.price }} руб/сутки</p>
-          </div>
-        </div>
+        <catalog-list :isMainPage="true">Популярные номера</catalog-list>
       </section>
 
       <section class="mt-12">
@@ -59,11 +48,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import axios from 'axios'
-
-const rooms = [
-  { id: 1, name: "Комфорт", price: 1500, image: "/images/room1.jpg" },
-  { id: 2, name: "Люкс", price: 2500 },
-]
+import CatalogList from "@/components/catalogRooms/CatalogRoomsList.vue";
 
 const reviews = ref([])
 
@@ -71,10 +56,9 @@ const getReviews = async () => {
   try {
     const {data} = await axios.get('http://localhost:8080/api/reviews')
     reviews.value = data
-        console.log(reviews)
 
   }catch (error) {
-
+    console.error(error)
   }
 }
 
@@ -87,6 +71,7 @@ const getContacts = async () => {
     contacts.value = data[0]
 
     socials.value = Object.entries(JSON.parse(data[0].social_links))
+
   } catch (error) {
     console.error(error);
   }
