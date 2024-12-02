@@ -1,7 +1,14 @@
 <script setup>
 import MyHeader from "@/components/globals/MyHeader.vue";
 import MyFooter from "@/components/globals/MyFooter.vue";
-import MainPage from "@/pages/MainPage.vue";
+import {onMounted} from "vue";
+import {useCatalogRoomsStore} from "@/stores/CatalogRoomsStore.js";
+
+const {getRooms} = useCatalogRoomsStore()
+
+onMounted(async () => {
+  await getRooms()
+})
 </script>
 
 <template>

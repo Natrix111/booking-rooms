@@ -1,8 +1,9 @@
 <template>
   <main class="min-h-screen">
+    {{mainRooms}}
     <div class="mx-auto ">
       <section>
-        <catalog-list :rooms="rooms">Популярные номера</catalog-list>
+        <catalog-list :rooms="getRoomsMainPage">Популярные номера</catalog-list>
       </section>
 
       <section class="mt-12">
@@ -49,12 +50,18 @@
 import {onMounted, ref} from "vue";
 import axios from 'axios'
 import CatalogList from "@/components/catalogRooms/CatalogRoomsList.vue";
+import {useCatalogRoomsStore} from "@/stores/CatalogRoomsStore.js";
+import {useMainStore} from "@/stores/MainStore.js";
+import {storeToRefs} from "pinia";
+
+const {api} = useMainStore()
+const {getRoomsMainPage} = storeToRefs(useCatalogRoomsStore())
 
 const reviews = ref([])
 
 const getReviews = async () => {
   try {
-    const {data} = await axios.get('http://localhost:8080/api/reviews')
+    const {data} = await axios.get(`${api}/reviews`)
     reviews.value = data
 
   }catch (error) {
@@ -67,7 +74,7 @@ const socials = ref([])
 
 const getContacts = async () => {
   try {
-    const {data} = await axios.get('http://localhost:8080/api/contact')
+    const {data} = await axios.get(`${api}/contact`)
     contacts.value = data[0]
     contacts.value.social_links = JSON.parse(contacts.value.social_links)
 
@@ -76,22 +83,9 @@ const getContacts = async () => {
   }
 }
 
-const rooms = ref([])
-
-const getRoomsMainPage = async () => {
-  try {
-    const {data} = await axios.get('http://localhost:8080/api/rooms')
-
-    return data.filter((room) => room.featured === true)
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 onMounted(async () => {
   await getContacts()
   await getReviews()
-  rooms.value = await getRoomsMainPage()
 })
 
 </script>

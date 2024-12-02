@@ -11,8 +11,6 @@
 
 <script setup>
 import CatalogListItem from "@/components/catalogRooms/CatalogRoomsListItem.vue";
-import axios from "axios";
-import {onMounted, ref} from "vue";
 
 const props = defineProps({
   rooms: {

@@ -26,6 +26,9 @@
 <script setup>
 import axios from "axios";
 import {onMounted, ref} from "vue";
+import {useMainStore} from "@/stores/MainStore.js";
+
+const {api} = useMainStore();
 
 const mainIfo = ref({
   title: 'Котейка',
@@ -35,7 +38,7 @@ const mainIfo = ref({
 
 const getMainInfo = async () => {
   try {
-    const { data } = await axios.get('http://localhost:8080/api/info')
+    const { data } = await axios.get(`${api}/info`)
     return data[0]
   }catch(error) {
     console.error(error)
