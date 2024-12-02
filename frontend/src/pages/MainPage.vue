@@ -1,5 +1,5 @@
 <template>
-  <main class="min-h-screen">
+  <main>
     {{mainRooms}}
     <div class="mx-auto ">
       <section>
@@ -70,7 +70,6 @@ const getReviews = async () => {
 }
 
 const contacts = ref({})
-const socials = ref([])
 
 const getContacts = async () => {
   try {
