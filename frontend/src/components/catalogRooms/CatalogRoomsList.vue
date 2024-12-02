@@ -11,6 +11,8 @@
 
 <script setup>
 import CatalogListItem from "@/components/catalogRooms/CatalogRoomsListItem.vue";
+import axios from "axios";
+import {onMounted, ref} from "vue";
 
 const props = defineProps({
   isMainPage : {
@@ -18,13 +20,21 @@ const props = defineProps({
   }
 })
 
-const rooms = [
-  { id: 1, name: "Комфорт", price: 1500, image: "/images/room1.jpg", mainPage: "true" },
-  { id: 2, name: "Люкс", price: 2500 },
-  { id: 3, name: "Люкс", price: 2200, mainPage: false },
-  { id: 4, name: "Президентский", price: 15000, image: "/images/room2.jpg", mainPage: "true" },
-  { id: 5, name: "Эконом", price: 500,  mainPage: "true" },
-]
+const rooms = ref([])
+
+const getRooms = async () => {
+  try {
+    const {data} = await axios.get('http://localhost:8080/api/rooms')
+
+    return data
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+onMounted(async () => {
+  rooms.value = await getRooms()
+})
 </script>
 
 <style scoped>

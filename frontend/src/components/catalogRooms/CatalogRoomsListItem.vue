@@ -1,7 +1,7 @@
 <template>
-  <article v-if="!(props.isMainPage && !props.room.mainPage)"
+  <article v-if="!(props.isMainPage && !props.room.featured)"
            class="bg-white p-4 hover:shadow-lg duration-300">
-    <img :src="props.room.image ? props.room.image : defaultPreview"
+    <img :src="props.room.photos ? props.room.photos[0] : defaultPreview"
          alt="Фото номера"
          class="w-full h-40 object-cover" />
     <h3>{{ props.room.name }}</h3>
