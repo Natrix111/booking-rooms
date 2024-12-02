@@ -8,7 +8,7 @@ import MainPage from "@/pages/MainPage.vue";
 <div class="bg-gray-100">
   <MyHeader/>
   <div class="container">
-    <router-view></router-view>
+    <router-view class="py-8"></router-view>
   </div>
   <MyFooter/>
 </div>

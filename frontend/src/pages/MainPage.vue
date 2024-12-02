@@ -1,8 +1,8 @@
 <template>
   <main class="min-h-screen">
-    <div class="mx-auto py-8">
+    <div class="mx-auto ">
       <section>
-        <catalog-list :isMainPage="true">Популярные номера</catalog-list>
+        <catalog-list :rooms="rooms">Популярные номера</catalog-list>
       </section>
 
       <section class="mt-12">
@@ -33,7 +33,7 @@
             <h3>Социальные сети</h3>
             <a
                 class="text-black"
-                v-for="[socialName, socialRef] in socials"
+                v-for="(socialRef, socialName) in contacts.social_links"
                 :key="socialRef"
                 :href="socialRef"
                 target="_blank"
@@ -69,9 +69,20 @@ const getContacts = async () => {
   try {
     const {data} = await axios.get('http://localhost:8080/api/contact')
     contacts.value = data[0]
+    contacts.value.social_links = JSON.parse(contacts.value.social_links)
 
-    socials.value = Object.entries(JSON.parse(data[0].social_links))
+  } catch (error) {
+    console.error(error);
+  }
+}
 
+const rooms = ref([])
+
+const getRoomsMainPage = async () => {
+  try {
+    const {data} = await axios.get('http://localhost:8080/api/rooms')
+
+    return data.filter((room) => room.featured === true)
   } catch (error) {
     console.error(error);
   }
@@ -80,6 +91,7 @@ const getContacts = async () => {
 onMounted(async () => {
   await getContacts()
   await getReviews()
+  rooms.value = await getRoomsMainPage()
 })
 
 </script>

@@ -1,6 +1,5 @@
 <template>
-  <article v-if="!(props.isMainPage && !props.room.featured)"
-           class="bg-white p-4 hover:shadow-lg duration-300">
+  <article class="bg-white p-4 hover:shadow-lg duration-300">
     <img :src="props.room.photos ? props.room.photos[0] : defaultPreview"
          alt="Фото номера"
          class="w-full h-40 object-cover" />
@@ -16,9 +15,6 @@ const props = defineProps({
   room: {
     required: true,
     type: Object,
-  },
-  isMainPage : {
-    type: Boolean
   }
 })
 </script>
