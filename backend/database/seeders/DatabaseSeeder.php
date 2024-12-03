@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ReviewSeeder::class,
             ContactSeeder::class,
             RoomSeeder::class,
+            AmenitySeeder::class,
         ]);
     }
 }
