@@ -29,5 +29,5 @@ Route::get('/contact', [ContactController::class, 'index']);
 Route::get('/reviews', [ReviewController::class, 'getRandomReviews']);
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard']);
+    Route::put('/contact', [AdminController::class, 'updateContact']);
 });
