@@ -18,7 +18,7 @@
 
 4. Для запуска окружения введите команды:
 ```bash
-      docker-compose up --build
+      docker-compose up -d --build
       docker-compose exec app composer install
 ```
 

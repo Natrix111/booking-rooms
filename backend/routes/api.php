@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\InformationController;
@@ -27,4 +28,6 @@ Route::get('/info', [InformationController::class, 'index']);
 Route::get('/contact', [ContactController::class, 'index']);
 Route::get('/reviews', [ReviewController::class, 'getRandomReviews']);
 
-
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard']);
+});

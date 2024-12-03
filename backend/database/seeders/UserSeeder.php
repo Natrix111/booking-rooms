@@ -18,13 +18,22 @@ class UserSeeder extends Seeder
             'email' => 'ivanov@gmail.com',
             'phone' => '8-123-456-78-90',
             'password' => bcrypt('QWEasd123'),
+            'role'=> 'client'
         ],
         [
             'name' => 'Екатерина Петрова',
             'email' => 'petrova@example.com',
             'phone' => '8-999-654-32-10',
             'password' => bcrypt('ASDqwe321'),
-        ]
+            'role'=> 'client'
+        ],
+        [
+            'name' => 'Администратор Первый',
+            'email' => 'Admin@admin.com',
+            'phone' => '8-999-999-99-99',
+            'password' => bcrypt('superAdmin'),
+            'role'=> 'admin'
+        ],
     ]);
 }
 
