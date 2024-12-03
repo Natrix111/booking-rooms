@@ -52,4 +52,19 @@ class RoomController extends Controller
             'areas' => $areas,
         ]);
     }
+
+    public function show($id)
+    {
+        $room = Room::findOrFail($id);
+
+        $otherRooms = Room::where('id', '!=', $id)
+            ->inRandomOrder()
+            ->take(3)
+            ->get();
+
+        return response()->json([
+            'room' => $room,
+            'otherRooms' => $otherRooms,
+        ]);
+    }
 }
