@@ -22,6 +22,7 @@ Route::get('/user', function (Request $request) {
 
 Route::get('rooms', [RoomController::class, 'index']);
 Route::get('rooms/filters', [RoomController::class, 'filters']);
+Route::get('/rooms/{id}', [RoomController::class, 'show']);
 
 Route::get('/info', [InformationController::class, 'index']);
 Route::get('/contact', [ContactController::class, 'index']);
