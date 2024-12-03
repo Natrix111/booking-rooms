@@ -82,7 +82,7 @@ class AmenityController extends Controller
         }
         $amenity->delete();
 
-        return response()->json("Удалено", 204);
+        return response()->json("Удалено", 200);
     }
 
 }

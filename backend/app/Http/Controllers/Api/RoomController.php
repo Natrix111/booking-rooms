@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Services\RoomFilterService;
 use Illuminate\Http\Request;
+use App\Models\Amenity;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class RoomController extends Controller
 {
@@ -52,4 +55,72 @@ class RoomController extends Controller
             'areas' => $areas,
         ]);
     }
+
+
+    public function create(Request $request)
+    {
+        //Осталось доделась загрузку изображений, будет позже
+            $validator = Validator::make($request->all(),([
+                'name' => 'required|string',
+                'dimensions' => 'required|json',
+                'amenities' => [
+                    'nullable',
+                    'array',
+                    Rule::in(Amenity::pluck('name')->toArray()), // Гарантирует, что значения из amenities существуют в базе данных
+                ],
+                'price' => 'required|numeric',
+                'photos' => 'nullable|array',
+                'featured' => 'boolean',
+            ]));
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+            $validatedData = $validator->validated();
+            $room = Room::create($validatedData);
+    
+            return response()->json($room, 201);
+
+    }
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'dimensions' => 'required|json',
+            'amenities' => [
+                'nullable',
+                'array',
+                Rule::in(Amenity::pluck('name')->toArray()),
+            ],
+            'price' => 'required|numeric',
+            'photos' => 'nullable|array',
+            'featured' => 'boolean',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+    
+        
+        try {
+            $room = Room::findOrFail($id);
+            } catch (\Exception $e) {
+                return response()->json(['errors'=> "Элемента по данному id не существует"],404);
+            }
+        $room->update($validator->validated());
+    
+        return response()->json($room, 200);
+    }
+
+    public function delete($id)
+    {
+        try {
+        $room = Room::findOrFail($id);
+        } catch (\Exception $e) {
+            return response()->json(['errors'=> "Элемента по данному id не существует"],404);
+        }
+        $room->delete();
+
+        return response()->json(["message"=>"Удалено"], 200);
+    }
+
 }
