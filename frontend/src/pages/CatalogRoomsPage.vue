@@ -9,8 +9,8 @@
             <input
                 type="number"
                 id="minPrice"
-                v-model.number="filters.minPrice"
-                :placeholder="filters.min_price"
+                v-model.number="selectedFilters.minPrice"
+                :placeholder="filtersList.min_price"
                 class="border rounded w-full px-3 py-2"
             />
           </div>
@@ -19,19 +19,20 @@
             <input
                 type="number"
                 id="maxPrice"
-                v-model.number="filters.maxPrice"
-                :placeholder="filters.max_price"
+                v-model.number="selectedFilters.maxPrice"
+                :placeholder="filtersList.max_price"
                 class="border rounded w-full px-3 py-2"
             />
           </div>
           <div>
             <h4 class="font-bold">Площадь номера</h4>
             <div class="space-y-2">
-              <div v-for="area in filters.areas" :key="area">
+              <div v-for="area in filtersList.areas" :key="area">
                 <label>
                   <input
                       type="checkbox"
                       :value="area"
+                      v-model="selectedFilters.areas"
                       class="mr-2"
                   />
                   {{ area }} м²
@@ -42,11 +43,12 @@
           <div>
             <h4 class="font-bold">Оснащение</h4>
             <div class="space-y-2">
-              <div v-for="amenty in filters.amenities" :key="amenty">
+              <div v-for="amenty in filtersList.amenities" :key="amenty">
                 <label>
                   <input
                       type="checkbox"
                       :value="amenty"
+                      v-model="selectedFilters.amenities"
                       class="mr-2"
                   />
                   {{ amenty }}
@@ -83,7 +85,7 @@
             <option value="priceDesc">Цена по убыванию</option>
           </select>
         </div>
-        <CatalogRoomsList :rooms="sortedRooms"/>
+        <CatalogRoomsList :rooms="sortedAndFilteredRooms"/>
       </section>
     </div>
   </main>
@@ -95,22 +97,62 @@ import CatalogRoomsList from "@/components/catalogRooms/CatalogRoomsList.vue";
 import {storeToRefs} from "pinia";
 import {useCatalogRoomsStore} from "@/stores/CatalogRoomsStore.js";
 
-const {rooms, filters} = storeToRefs(useCatalogRoomsStore())
+const {rooms, filters: filtersList} = storeToRefs(useCatalogRoomsStore())
 const {getFilters} = useCatalogRoomsStore()
+
+const selectedFilters = ref({
+  minPrice: null,
+  maxPrice: null,
+  areas: [],
+  amenities: [],
+});
+
+const appliedFilters = ref({ ...selectedFilters.value })
 
 const selectedSort = ref("priceAsc")
 
 const sortedRooms = computed(() => {
-  if(selectedSort.value === "priceAsc") {
-    return [...rooms.value].sort((a, b) => Number(a.price) - Number(b.price))
+  switch (selectedSort.value) {
+    case "priceAsc":
+      return [...rooms.value].sort((a, b) => Number(a.price) - Number(b.price));
+    case "priceDesc":
+      return [...rooms.value].sort((a, b) => Number(b.price) - Number(a.price));
+    default:
+      return rooms.value;
   }
-  if(selectedSort.value === "priceDesc") {
-    return [...rooms.value].sort((a, b) => Number(b.price) - Number(a.price))
-  }
-  return rooms.value
+});
+
+const sortedAndFilteredRooms = computed(() => {
+  return sortedRooms.value
+      .filter((room) => {
+        if (appliedFilters.value.minPrice && room.price < appliedFilters.value.minPrice) return false
+
+        if (appliedFilters.value.maxPrice && room.price > appliedFilters.value.maxPrice) return false
+
+        if (appliedFilters.value.areas.length > 0 && !appliedFilters.value.areas.includes(room.area)) return false
+
+        if (appliedFilters.value.amenities.length > 0 && !appliedFilters.value.amenities.every(feature => room.amenities.includes(feature))) return false
+
+        return true
+      })
 })
 
-  onMounted(async () => {
+const applyFilters = () => {
+  appliedFilters.value = {...selectedFilters.value}
+}
+
+const resetFilters = () => {
+  selectedFilters.value = {
+    minPrice: null,
+    maxPrice: null,
+    areas: [],
+    amenities: [],
+  }
+
+  applyFilters()
+}
+
+onMounted(async () => {
   await getFilters()
 })
 </script>

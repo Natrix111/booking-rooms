@@ -4,8 +4,7 @@
     <CatalogListItem
         v-for="room in rooms"
         :key="room.id"
-        :room="room"
-        :isMainPage="isMainPage"/>
+        :room="room"/>
   </div>
 </template>
 

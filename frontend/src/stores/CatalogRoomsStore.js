@@ -13,6 +13,7 @@ export const useCatalogRoomsStore = defineStore('CatalogRoomsStore', () => {
             const {data} = await axios.get(`${api}/rooms`)
 
             rooms.value = data
+            rooms.value.forEach((room) => {room.area = room.dimensions[0] * room.dimensions[1]})
 
         } catch (error) {
             console.error(error);
