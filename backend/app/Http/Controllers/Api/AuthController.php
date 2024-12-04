@@ -21,7 +21,6 @@ class AuthController extends Controller
             'email'=>$request->email,
             'password'=>Hash::make($request->password),
 //            'avatar' => $avatarPath, // с аватарками попозже разберусь хз че тут делать
-            'role' => 'user'
         ]);
         $token = $user->createToken('token')->plainTextToken;
         return response()->json([
