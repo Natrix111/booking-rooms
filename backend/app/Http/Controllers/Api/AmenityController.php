@@ -33,11 +33,11 @@ class AmenityController extends Controller
            
             $imgName = uniqid().'.'.$image->getClientOriginalExtension(); 
             
-            $image->move(public_path('images'), $imgName);
+            $image->move(public_path('images/amenity'), $imgName);
 
              
             
-            $amenity->img = 'images/' . $imgName;
+            $amenity->img = 'images/amenity/' . $imgName;
         }
 
         $amenity->name = $request->input('name');

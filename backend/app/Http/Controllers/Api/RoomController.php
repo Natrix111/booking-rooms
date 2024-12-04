@@ -59,40 +59,67 @@ class RoomController extends Controller
 
     public function create(Request $request)
     {
-        //Осталось доделась загрузку изображений, будет позже
+
             $validator = Validator::make($request->all(),([
                 'name' => 'required|string',
-                'dimensions' => 'required|json',
+                'width' => 'required|integer|min:1',  
+                'height' => 'required|integer|min:1', 
+                'length' => 'required|integer|min:1',  
                 'amenities' => [
                     'nullable',
                     'array',
                     Rule::in(Amenity::pluck('name')->toArray()), // Гарантирует, что значения из amenities существуют в базе данных
                 ],
                 'price' => 'required|numeric',
-                'photos' => 'nullable|array',
+                'photos' => 'nullable|array|max:5', 
+                'photos.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
                 'featured' => 'boolean',
             ]));
             if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], 400);
             }
             $validatedData = $validator->validated();
+            $validatedData['dimensions'] = json_encode([$validatedData['width'], $validatedData['height'], $validatedData['length']]);
+            
+            if ($request->hasFile('photos')) {
+                $images = [];
+                foreach ($request->file('photos') as $photo) {
+                    $imgName = uniqid() . '.' . $photo->getClientOriginalExtension(); 
+                    $photo->move(public_path('images/room'), $imgName); 
+        
+                   
+                    $images[] = 'images/room/' . $imgName;
+                }
+            
+                $validatedData['photos'] = json_encode($images);
+            } else {
+                $validatedData['photos'] = json_encode([]); 
+            }
+            
+            
             $room = Room::create($validatedData);
     
             return response()->json($room, 201);
 
+
+
     }
     public function update(Request $request, $id)
     {
+        //Метод PUT в postman не отправляет formdata, поэтому вообще хз как реализовывать смену картинки
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'dimensions' => 'required|json',
+            'width' => 'required|integer|min:1',  
+            'height' => 'required|integer|min:1', 
+            'length' => 'required|integer|min:1',  
             'amenities' => [
                 'nullable',
                 'array',
                 Rule::in(Amenity::pluck('name')->toArray()),
             ],
             'price' => 'required|numeric',
-            'photos' => 'nullable|array',
+            'photos' => 'nullable|array|max:5', 
+            'photos.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
             'featured' => 'boolean',
         ]);
     
@@ -106,7 +133,25 @@ class RoomController extends Controller
             } catch (\Exception $e) {
                 return response()->json(['errors'=> "Элемента по данному id не существует"],404);
             }
-        $room->update($validator->validated());
+            $validatedData = $validator->validated();
+            
+            $validatedData['dimensions'] = json_encode([$validatedData['width'], $validatedData['height'], $validatedData['length']]);
+            if ($request->hasFile('photos')) {
+                $images = [];
+                foreach ($request->file('photos') as $photo) {
+                    $imgName = uniqid() . '.' . $photo->getClientOriginalExtension(); 
+                    $photo->move(public_path('images/room'), $imgName); 
+        
+                   
+                    $images[] = 'images/room/' . $imgName;
+                }
+            
+                $validatedData['photos'] = json_encode($images);
+            } else {
+                $validatedData['photos'] = json_encode([]); 
+            }
+       
+            $room->update($validatedData);
     
         return response()->json($room, 200);
     }

@@ -239,11 +239,6 @@
 									"type": "text"
 								},
 								{
-									"key": "dimensions",
-									"value": "[ 5, 2, 6]",
-									"type": "text"
-								},
-								{
 									"key": "amenities[0]",
 									"value": "TV",
 									"type": "text"
@@ -254,9 +249,9 @@
 									"type": "text"
 								},
 								{
-									"key": "photos",
-									"value": "",
-									"type": "text"
+									"key": "photos[0]",
+									"type": "file",
+									"src": "/home/yoru/Desktop/images/ebf7fc25cf73d2e65f1391735034dc6d.jpg"
 								},
 								{
 									"key": "featured",
@@ -267,6 +262,26 @@
 									"key": "amenities[1]",
 									"value": "WiFi",
 									"type": "text"
+								},
+								{
+									"key": "width",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "height",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "length",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "photos[1]",
+									"type": "file",
+									"src": "/home/yoru/Desktop/images/238862_childrens-room_1-min.jpg"
 								}
 							]
 						},
@@ -298,22 +313,68 @@
 						"method": "PUT",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "    {\n        \"id\": 14,\n        \"name\": \"Номер 2\",\n        \"dimensions\": \"[ 5, 2, 7]\",\n        \"amenities\": [\n            \"TV\",\n            \"WiFi\"\n        ],\n        \"price\": \"9000.00\",\n        \"featured\": false\n    }",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Номер 6",
+									"type": "text"
+								},
+								{
+									"key": "amenities[0]",
+									"value": "TV",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "9000",
+									"type": "text"
+								},
+								{
+									"key": "photos[0]",
+									"type": "file",
+									"src": "/home/yoru/Desktop/images/ebf7fc25cf73d2e65f1391735034dc6d.jpg"
+								},
+								{
+									"key": "featured",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "amenities[1]",
+									"value": "WiFi",
+									"type": "text"
+								},
+								{
+									"key": "width",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "height",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "length",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "photos[1]",
+									"type": "file",
+									"src": "/home/yoru/Desktop/images/238862_childrens-room_1-min.jpg"
 								}
-							}
+							]
 						},
 						"url": {
-							"raw": "{{host}}/rooms/14",
+							"raw": "{{host}}/rooms/32",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"rooms",
-								"14"
+								"32"
 							]
 						}
 					},
@@ -350,13 +411,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{host}}/rooms/13",
+							"raw": "{{host}}/rooms/32",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"rooms",
-								"13"
+								"32"
 							]
 						}
 					},
