@@ -38,7 +38,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::delete('/amentities/{id}', [AmenityController::class, 'delete']);
 
     Route::post('rooms', [RoomController::class, 'create']);
-    Route::put('rooms/{id}', [RoomController::class, 'update']);
+    Route::patch('rooms/{id}', [RoomController::class, 'update']);
     Route::delete('rooms/{id}', [RoomController::class, 'delete']);
 
 });

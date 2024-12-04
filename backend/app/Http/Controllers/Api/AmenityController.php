@@ -51,31 +51,29 @@ class AmenityController extends Controller
     public function update(Request $request, $id)
     {
   
-        // Найдите существующий объект Amenity по его ID
+
         $amenity = Amenity::findOrFail($id);
         
-        // Валидация входящих данных
+
         $validator = Validator::make($request->all(), [
-            'name' => 'nullable|string', // Поле name можно обновить или оставить пустым
-            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Поле img тоже является необязательным
+            'name' => 'nullable|string', 
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
         ]);
     
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
     
-        // Обновите имя, если оно присутствует в запросе
+
         if ($request->has('name')) {
             $amenity->name = $request->input('name');
         }
     
-        // Проверка и загрузка нового изображения
         if ($request->hasFile('img')) {
-            // Удалите старое изображение, если необходимо
             if ($amenity->img) {
                 $oldImagePath = public_path($amenity->img);
                 if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath); // Удаление старого изображения
+                    unlink($oldImagePath); 
                 }
             }
     
@@ -83,13 +81,11 @@ class AmenityController extends Controller
             $imgName = uniqid() . '.' . $image->getClientOriginalExtension();
     
             $image->move(public_path('images/amenity'), $imgName);
-            $amenity->img = 'images/amenity/' . $imgName; // Обновление пути к новому изображению
+            $amenity->img = 'images/amenity/' . $imgName; 
         }
     
-        // Сохраните изменения в базе данных
         $amenity->save();
     
-        // Верните обновленный объект
         return response()->json($amenity, 200);
     }
 

@@ -89,7 +89,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "HqMQy64qcd3cVv65NMK8d3zhwoHgZ2Gh9XQmkqgEf66b94a2",
+									"value": "bkaHLvtRGoNJnrjqeqoiPfWOFpsSskCwzB6LeQcL8d6c68f3",
 									"type": "string"
 								}
 							]
@@ -116,7 +116,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "HqMQy64qcd3cVv65NMK8d3zhwoHgZ2Gh9XQmkqgEf66b94a2",
+									"value": "bkaHLvtRGoNJnrjqeqoiPfWOFpsSskCwzB6LeQcL8d6c68f3",
 									"type": "string"
 								}
 							]
@@ -133,6 +133,7 @@
 								},
 								{
 									"key": "img",
+									"contentType": "",
 									"type": "file",
 									"src": "/home/yoru/Desktop/images/ebf7fc25cf73d2e65f1391735034dc6d.jpg"
 								}
@@ -152,36 +153,57 @@
 				},
 				{
 					"name": "Изменение удобства",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "HqMQy64qcd3cVv65NMK8d3zhwoHgZ2Gh9XQmkqgEf66b94a2",
+									"value": "bkaHLvtRGoNJnrjqeqoiPfWOFpsSskCwzB6LeQcL8d6c68f3",
 									"type": "string"
 								}
 							]
 						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\":\"Телевидение\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+						"method": "POST",
+						"header": [
+							{
+								"key": "_method",
+								"value": "patch",
+								"type": "text"
 							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "телевизорр",
+									"type": "text"
+								},
+								{
+									"key": "img",
+									"type": "file",
+									"src": "/home/yoru/Desktop/images/gostevaya.jpg"
+								}
+							]
 						},
 						"url": {
-							"raw": "{{host}}/amentities/6",
+							"raw": "{{host}}/amentities/6?_method=patch",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"amentities",
 								"6"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "patch"
+								}
 							]
 						}
 					},
@@ -223,7 +245,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "HqMQy64qcd3cVv65NMK8d3zhwoHgZ2Gh9XQmkqgEf66b94a2",
+									"value": "bkaHLvtRGoNJnrjqeqoiPfWOFpsSskCwzB6LeQcL8d6c68f3",
 									"type": "string"
 								}
 							]
@@ -305,13 +327,19 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "HqMQy64qcd3cVv65NMK8d3zhwoHgZ2Gh9XQmkqgEf66b94a2",
+									"value": "bkaHLvtRGoNJnrjqeqoiPfWOFpsSskCwzB6LeQcL8d6c68f3",
 									"type": "string"
 								}
 							]
 						},
-						"method": "PUT",
-						"header": [],
+						"method": "POST",
+						"header": [
+							{
+								"key": "_method",
+								"value": "patch",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
@@ -333,11 +361,11 @@
 								{
 									"key": "photos[0]",
 									"type": "file",
-									"src": "/home/yoru/Desktop/images/ebf7fc25cf73d2e65f1391735034dc6d.jpg"
+									"src": "/home/yoru/Desktop/images/gostevaya.jpg"
 								},
 								{
 									"key": "featured",
-									"value": "0",
+									"value": "1",
 									"type": "text"
 								},
 								{
@@ -347,34 +375,41 @@
 								},
 								{
 									"key": "width",
-									"value": "5",
+									"value": "54",
 									"type": "text"
 								},
 								{
 									"key": "height",
-									"value": "5",
+									"value": "55",
 									"type": "text"
 								},
 								{
 									"key": "length",
-									"value": "5",
+									"value": "58",
 									"type": "text"
 								},
 								{
 									"key": "photos[1]",
 									"type": "file",
-									"src": "/home/yoru/Desktop/images/238862_childrens-room_1-min.jpg"
+									"src": [],
+									"disabled": true
 								}
 							]
 						},
 						"url": {
-							"raw": "{{host}}/rooms/32",
+							"raw": "{{host}}/rooms/9?_method=patch",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"rooms",
-								"32"
+								"9"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "patch"
+								}
 							]
 						}
 					},

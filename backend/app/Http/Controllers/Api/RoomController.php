@@ -106,7 +106,6 @@ class RoomController extends Controller
     }
     public function update(Request $request, $id)
     {
-        //Метод PUT в postman не отправляет formdata, поэтому вообще хз как реализовывать смену картинки
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'width' => 'required|integer|min:1',  
