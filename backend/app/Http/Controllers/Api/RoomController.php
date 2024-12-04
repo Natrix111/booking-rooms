@@ -59,7 +59,6 @@ class RoomController extends Controller
 
     public function create(Request $request)
     {
-
             $validator = Validator::make($request->all(),([
                 'name' => 'required|string',
                 'width' => 'required|integer|min:1',

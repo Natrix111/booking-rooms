@@ -22,9 +22,9 @@ class ContactController extends Controller
             'working_hours' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
-            'social_links' => 'nullable|json',
+            'social_links' => 'nullable|array',
         ]);
-        
+
         // Получаем первый контакт (предполагается, что запись одна)
         $contact = Contact::first();
 
