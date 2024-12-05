@@ -24,11 +24,8 @@
 </template>
 
 <script setup>
-import axios from "axios";
 import {onMounted, ref} from "vue";
-import {useMainStore} from "@/stores/MainStore.js";
-
-const {api} = useMainStore();
+import {api} from "@/api/api.js";
 
 const mainIfo = ref({
   title: 'Котейка',
@@ -38,8 +35,10 @@ const mainIfo = ref({
 
 const getMainInfo = async () => {
   try {
-    const { data } = await axios.get(`${api}/info`)
+    const { data } = await api.get('info')
+
     return data[0]
+
   }catch(error) {
     console.error(error)
   }

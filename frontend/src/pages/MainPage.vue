@@ -1,6 +1,5 @@
 <template>
   <main>
-    {{mainRooms}}
     <div class="mx-auto ">
       <section>
         <catalog-list :rooms="getRoomsMainPage">Популярные номера</catalog-list>
@@ -48,20 +47,18 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import axios from 'axios'
 import CatalogList from "@/components/catalogRooms/CatalogRoomsList.vue";
 import {useCatalogRoomsStore} from "@/stores/CatalogRoomsStore.js";
-import {useMainStore} from "@/stores/MainStore.js";
 import {storeToRefs} from "pinia";
+import {api} from "@/api/api.js";
 
-const {api} = useMainStore()
 const {getRoomsMainPage} = storeToRefs(useCatalogRoomsStore())
 
 const reviews = ref([])
 
 const getReviews = async () => {
   try {
-    const {data} = await axios.get(`${api}/reviews`)
+    const {data} = await api.get('reviews')
     reviews.value = data
 
   }catch (error) {
@@ -73,18 +70,17 @@ const contacts = ref({})
 
 const getContacts = async () => {
   try {
-    const {data} = await axios.get(`${api}/contact`)
+    const {data} = await api.get('contact')
     contacts.value = data[0]
-    contacts.value.social_links = JSON.parse(contacts.value.social_links)
 
   } catch (error) {
     console.error(error);
   }
 }
 
-onMounted(async () => {
-  await getContacts()
-  await getReviews()
+onMounted(() => {
+  getContacts()
+  getReviews()
 })
 
 </script>

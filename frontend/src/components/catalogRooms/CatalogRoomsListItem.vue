@@ -3,10 +3,10 @@
     <img :src="props.room.photos ? props.room.photos[0] : defaultPreview"
          alt="Фото номера"
          class="w-full h-40 object-cover" />
-    <h3>{{ props.room.name }}</h3>
-    <p>Цена: {{ props.room.price }} руб/сутки</p>
-    <p>Площадь: {{ props.room.area }} м²</p>
-    <p>Оснащение: {{ props.room.amenities.join(', ') }} </p>
+    <h3>{{ room.name }}</h3>
+    <p>Цена: {{ room.price }} руб/сутки</p>
+    <p>Площадь: {{ room.area }} м²</p>
+    <p>Оснащение: {{ room.amenities.join(', ') }} </p>
   </article>
 </template>
 

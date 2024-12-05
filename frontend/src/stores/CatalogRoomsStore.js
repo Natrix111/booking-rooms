@@ -1,16 +1,14 @@
 import {defineStore} from "pinia";
-import {useMainStore} from "./MainStore.js";
 import {computed, ref} from "vue";
-import axios from "axios";
+import {api} from "@/api/api.js";
 
 export const useCatalogRoomsStore = defineStore('CatalogRoomsStore', () => {
-    const {api} = useMainStore()
     const rooms = ref([])
     const filters = ref([])
 
     const getRooms = async () => {
         try {
-            const {data} = await axios.get(`${api}/rooms`)
+            const {data} = await api.get('rooms')
 
             rooms.value = data
             rooms.value.forEach((room) => {room.area = room.dimensions[0] * room.dimensions[1]})
@@ -22,7 +20,7 @@ export const useCatalogRoomsStore = defineStore('CatalogRoomsStore', () => {
 
     const getFilters = async () => {
         try {
-            const {data} = await axios.get(`${api}/rooms/filters`)
+            const {data} = await api.get('rooms/filters')
 
             filters.value = data
 
