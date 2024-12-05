@@ -33,4 +33,5 @@ class Room extends Model
     {
         return $this->amenities ?? [];
     }
+    public $timestamps = false;
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AmenityController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\InformationController;
@@ -28,4 +29,17 @@ Route::get('/info', [InformationController::class, 'index']);
 Route::get('/contact', [ContactController::class, 'index']);
 Route::get('/reviews', [ReviewController::class, 'getRandomReviews']);
 
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::put('/contact', [ContactController::class, 'update']);
+    Route::put('/info', [InformationController::class, 'update']);
 
+    Route::get('/amentities', [AmenityController::class, 'index']);
+    Route::post('/amentities', [AmenityController::class, 'create']);
+    Route::patch('/amentities/{id}', [AmenityController::class, 'update']);
+    Route::delete('/amentities/{id}', [AmenityController::class, 'delete']);
+
+    Route::post('rooms', [RoomController::class, 'create']);
+    Route::patch('rooms/{id}', [RoomController::class, 'update']);
+    Route::delete('rooms/{id}', [RoomController::class, 'delete']);
+
+});
