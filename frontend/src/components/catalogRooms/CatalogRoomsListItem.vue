@@ -1,8 +1,8 @@
 <template>
-  <article class="bg-white p-4 hover:shadow-lg duration-300">
+  <article class="item">
     <img :src="props.room.photos ? props.room.photos[0] : defaultPreview"
          alt="Фото номера"
-         class="w-full h-40 object-cover" />
+         class="item-image" />
     <h3>{{ room.name }}</h3>
     <p>Цена: {{ room.price }} руб/сутки</p>
     <p>Площадь: {{ room.area }} м²</p>
@@ -22,4 +22,11 @@ const props = defineProps({
 </script>
 
 <style scoped>
+.item {
+  @apply bg-white p-4 rounded hover:shadow-lg duration-300;
+}
+
+.item-image {
+  @apply w-full h-40 object-cover;
+}
 </style>

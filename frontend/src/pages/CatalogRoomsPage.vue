@@ -1,7 +1,7 @@
 <template>
   <main>
-    <div class="mx-auto flex">
-      <aside class="w-1/4 bg-white p-4 mr-6">
+    <div class="flex">
+      <aside class="aside">
         <h3 class="mb-4">Фильтры</h3>
         <form @submit.prevent="applyFilters" class="space-y-4">
           <div>
@@ -11,7 +11,7 @@
                 id="minPrice"
                 v-model.number="selectedFilters.minPrice"
                 :placeholder="filtersList.min_price"
-                class="border rounded w-full px-3 py-2"
+                class="input"
             />
           </div>
           <div>
@@ -21,11 +21,11 @@
                 id="maxPrice"
                 v-model.number="selectedFilters.maxPrice"
                 :placeholder="filtersList.max_price"
-                class="border rounded w-full px-3 py-2"
+                class="input"
             />
           </div>
           <div>
-            <h4 class="font-bold">Площадь номера</h4>
+            <h4 class="font-bold mb-2">Площадь номера</h4>
             <div class="space-y-2">
               <div v-for="area in filtersList.areas" :key="area">
                 <label>
@@ -41,7 +41,7 @@
             </div>
           </div>
           <div>
-            <h4 class="font-bold">Оснащение</h4>
+            <h4 class="font-bold mb-2">Оснащение</h4>
             <div class="space-y-2">
               <div v-for="amenty in filtersList.amenities" :key="amenty">
                 <label>
@@ -56,17 +56,17 @@
               </div>
             </div>
           </div>
-          <div class="flex flex-col space-y-4">
+          <div class="buttons-list">
             <button
                 type="submit"
-                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                class="button button-blue"
             >
               Применить
             </button>
             <button
                 type="reset"
                 @click="resetFilters"
-                class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
+                class="button button-grey"
             >
               Сбросить фильтр
             </button>
@@ -75,11 +75,11 @@
       </aside>
 
       <section class="w-3/4">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold">Каталог номеров</h2>
+        <div class="rooms-title-wrapper">
+          <h2 class="font-bold">Каталог номеров</h2>
           <select
               v-model="selectedSort"
-              class="border rounded px-4 py-2"
+              class="sort-select"
           >
             <option value="priceAsc">Цена по возрастанию</option>
             <option value="priceDesc">Цена по убыванию</option>
@@ -107,7 +107,7 @@ const selectedFilters = ref({
   amenities: [],
 });
 
-const appliedFilters = ref({ ...selectedFilters.value })
+const appliedFilters = ref({...selectedFilters.value})
 
 const selectedSort = ref("priceAsc")
 
@@ -156,3 +156,21 @@ onMounted(async () => {
   await getFilters()
 })
 </script>
+
+<style scoped>
+.aside {
+  @apply w-1/4 bg-white p-4 mr-6;
+}
+
+.buttons-list {
+  @apply flex flex-col space-y-4;
+}
+
+.rooms-title-wrapper {
+  @apply flex justify-between items-center mb-6
+}
+
+.sort-select {
+  @apply border rounded px-4 py-2
+}
+</style>
