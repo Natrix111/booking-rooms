@@ -50,37 +50,27 @@ import {onMounted, ref} from "vue";
 import CatalogList from "@/components/catalogRooms/CatalogRoomsList.vue";
 import {useCatalogRoomsStore} from "@/stores/CatalogRoomsStore.js";
 import {storeToRefs} from "pinia";
-import {api} from "@/api/api.js";
+
+import {getReviews} from "@/api/reviews.js";
+import {getContacts} from "@/api/contacts.js";
 
 const {getRoomsMainPage} = storeToRefs(useCatalogRoomsStore())
 
 const reviews = ref([])
-
-const getReviews = async () => {
-  try {
-    const {data} = await api.get('reviews')
-    reviews.value = data
-
-  }catch (error) {
-    console.error(error)
-  }
-}
-
 const contacts = ref({})
 
-const getContacts = async () => {
+onMounted(async () => {
   try {
-    const {data} = await api.get('contact')
-    contacts.value = data[0]
+    const [fetchedReviews, fetchedContacts] = await Promise.all([
+      getReviews(),
+      getContacts()
+    ])
 
+    reviews.value = fetchedReviews
+    contacts.value = fetchedContacts
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
-}
-
-onMounted(() => {
-  getContacts()
-  getReviews()
 })
 
 </script>

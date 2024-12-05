@@ -25,24 +25,13 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {api} from "@/api/api.js";
+import {getMainInfo} from "@/api/header.js";
 
 const mainIfo = ref({
   title: 'Котейка',
   slogan: 'Слоган',
   city: 'Москва',
 })
-
-const getMainInfo = async () => {
-  try {
-    const { data } = await api.get('info')
-
-    return data[0]
-
-  }catch(error) {
-    console.error(error)
-  }
-}
 
 onMounted(async () => {
   mainIfo.value = await getMainInfo()
