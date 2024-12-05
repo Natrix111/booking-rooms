@@ -7,13 +7,13 @@
       </div>
       <div class="flex space-x-20 flex-grow">
         <nav class="flex space-x-4 flex-grow">
-          <a href="/">Главная</a>
-          <a href="/catalog">Каталог</a>
+          <router-link to="/">Главная</router-link>
+          <router-link to="/catalog">Каталог</router-link>
           <a href="#">Контакты</a>
         </nav>
         <div class="flex space-x-4 ">
-          <a href="/">Вход</a>
-          <a href="/">Регистрация</a>
+          <router-link to="/login">Вход</router-link>
+          <router-link to="/register">Регистрация</router-link>
         </div>
         <div class="flex space-x-4">
           <p class="underline">{{ mainIfo.city }}</p>
@@ -26,6 +26,9 @@
 <script setup>
 import axios from "axios";
 import {onMounted, ref} from "vue";
+import {useMainStore} from "@/stores/MainStore.js";
+
+const {api} = useMainStore();
 
 const mainIfo = ref({
   title: 'Котейка',
@@ -35,7 +38,7 @@ const mainIfo = ref({
 
 const getMainInfo = async () => {
   try {
-    const { data } = await axios.get('http://localhost:8080/api/info')
+    const { data } = await axios.get(`${api}/info`)
     return data[0]
   }catch(error) {
     console.error(error)

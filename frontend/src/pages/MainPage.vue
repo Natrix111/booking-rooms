@@ -1,19 +1,9 @@
 <template>
-  <main class="min-h-screen">
-    <div class="mx-auto py-8">
+  <main>
+    {{mainRooms}}
+    <div class="mx-auto ">
       <section>
-        <h2>Популярные номера</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div
-              v-for="room in rooms"
-              :key="room.id"
-              class="bg-white p-4 hover:shadow-lg duration-300"
-          >
-            <img :src="room.image ? room.image : '/images/placeholder.jpg'" alt="Номер" class="w-full h-40 object-cover" />
-            <h3>{{ room.name }}</h3>
-            <p>Цена: {{ room.price }} руб/сутки</p>
-          </div>
-        </div>
+        <catalog-list :rooms="getRoomsMainPage">Популярные номера</catalog-list>
       </section>
 
       <section class="mt-12">
@@ -44,7 +34,7 @@
             <h3>Социальные сети</h3>
             <a
                 class="text-black"
-                v-for="[socialName, socialRef] in socials"
+                v-for="(socialRef, socialName) in contacts.social_links"
                 :key="socialRef"
                 :href="socialRef"
                 target="_blank"
@@ -59,34 +49,34 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import axios from 'axios'
+import CatalogList from "@/components/catalogRooms/CatalogRoomsList.vue";
+import {useCatalogRoomsStore} from "@/stores/CatalogRoomsStore.js";
+import {useMainStore} from "@/stores/MainStore.js";
+import {storeToRefs} from "pinia";
 
-const rooms = [
-  { id: 1, name: "Комфорт", price: 1500, image: "/images/room1.jpg" },
-  { id: 2, name: "Люкс", price: 2500 },
-]
+const {api} = useMainStore()
+const {getRoomsMainPage} = storeToRefs(useCatalogRoomsStore())
 
 const reviews = ref([])
 
 const getReviews = async () => {
   try {
-    const {data} = await axios.get('http://localhost:8080/api/reviews')
+    const {data} = await axios.get(`${api}/reviews`)
     reviews.value = data
-        console.log(reviews)
 
   }catch (error) {
-
+    console.error(error)
   }
 }
 
 const contacts = ref({})
-const socials = ref([])
 
 const getContacts = async () => {
   try {
-    const {data} = await axios.get('http://localhost:8080/api/contact')
+    const {data} = await axios.get(`${api}/contact`)
     contacts.value = data[0]
+    contacts.value.social_links = JSON.parse(contacts.value.social_links)
 
-    socials.value = Object.entries(JSON.parse(data[0].social_links))
   } catch (error) {
     console.error(error);
   }
