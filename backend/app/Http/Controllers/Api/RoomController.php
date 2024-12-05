@@ -18,35 +18,48 @@ class RoomController extends Controller
     {
         $this->roomFilterService = $roomFilterService;
     }
-
     public function index(Request $request)
     {
-        $rooms = $this->roomFilterService->applyFilters($request)->get();
+        $rooms = $this->roomFilterService
+            ->applyFilters($request)
+            ->with('amenities')
+            ->get();
+
+        $rooms = $rooms->map(function ($room) {
+            return [
+                'id' => $room->id,
+                'name' => $room->name,
+                'dimensions' => $room->dimensions,
+                'price' => $room->price,
+                'photos' => $room->photos,
+                'featured' => $room->featured,
+                'amenities' => $room->amenities->map(function ($amenity) {
+                    return [
+                        'name' => $amenity->name,
+                        'img' => $amenity->img,
+                    ];
+                }),
+            ];
+        });
 
         return response()->json($rooms);
     }
 
+
     public function filters()
     {
-        $rooms = Room::all();
-
         $minPrice = Room::min('price');
         $maxPrice = Room::max('price');
 
-        $amenities = $rooms
-            ->flatMap(function ($room) {
-                return $room->getAmenities();
-            })
-            ->unique()
-            ->values();
-
-        $areas = $rooms
+        $areas = Room::all()
             ->map(function ($room) {
                 return $room->getSquare();
             })
             ->unique()
             ->sort()
             ->values();
+
+        $amenities = Amenity::pluck('name')->unique()->values();
 
         return response()->json([
             'min_price' => $minPrice,
@@ -56,7 +69,34 @@ class RoomController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        $room = Room::with('amenities')->findOrFail($id);
 
+        $otherRooms = Room::where('id', '!=', $id)
+            ->inRandomOrder()
+            ->take(3)
+            ->get();
+
+        return response()->json([
+            'room' => [
+                'id' => $room->id,
+                'name' => $room->name,
+                'dimensions' => $room->dimensions,
+                'area' => $room->area,
+                'price' => $room->price,
+                'photos' => $room->photos,
+                'featured' => $room->featured,
+                'amenities' => $room->amenities->map(function ($amenity) {
+                    return [
+                        'name' => $amenity->name,
+                        'icon' => $amenity->img,
+                    ];
+                }),
+            ],
+            'otherRooms' => $otherRooms,
+        ]);
+    }
     public function create(Request $request)
     {
             $validator = Validator::make($request->all(),([

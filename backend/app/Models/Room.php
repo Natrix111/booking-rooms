@@ -11,7 +11,6 @@ class Room extends Model
     protected $fillable = [
         'name',
         'dimensions',
-        'amenities',
         'price',
         'photos',
         'featured',
@@ -19,19 +18,18 @@ class Room extends Model
 
     protected $casts = [
         'dimensions' => 'array',
-        'amenities' => 'array',
         'photos' => 'array',
     ];
 
+    public function amenities()
+    {
+        return $this->belongsToMany(Amenity::class, 'room_amenity', 'room_id', 'amenity_id');
+    }
     public function getSquare()
     {
         $dimensions = $this->dimensions;
         return $dimensions[0] * $dimensions[1];
     }
 
-    public function getAmenities()
-    {
-        return $this->amenities ?? [];
-    }
     public $timestamps = false;
 }
