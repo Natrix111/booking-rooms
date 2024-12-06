@@ -1,6 +1,6 @@
 import {api} from "@/api/api.js";
 
-export const getMainInfo = async () => {
+export const getHeaderFromApi = async () => {
     try {
         const { data } = await api.get('info')
 

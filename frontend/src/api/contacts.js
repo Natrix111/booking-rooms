@@ -1,6 +1,6 @@
 import {api} from "@/api/api.js";
 
-export const getContacts = async () => {
+export const getContactsFromApi = async () => {
     try {
         const {data} = await api.get('contact')
 

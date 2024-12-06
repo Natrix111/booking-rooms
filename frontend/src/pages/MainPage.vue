@@ -46,32 +46,15 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from "vue";
 import CatalogList from "@/components/catalogRooms/CatalogRoomsList.vue";
-import {useCatalogRoomsStore} from "@/stores/CatalogRoomsStore.js";
+
+import {useCatalogRoomsStore} from "@/stores/catalog-rooms-store.js";
+import {useMainInfoStore} from "@/stores/main-info-store.js";
 import {storeToRefs} from "pinia";
 
-import {getReviews} from "@/api/reviews.js";
-import {getContacts} from "@/api/contacts.js";
-
 const {getRoomsMainPage} = storeToRefs(useCatalogRoomsStore())
+const {reviews, contacts} = storeToRefs(useMainInfoStore())
 
-const reviews = ref([])
-const contacts = ref({})
-
-onMounted(async () => {
-  try {
-    const [fetchedReviews, fetchedContacts] = await Promise.all([
-      getReviews(),
-      getContacts()
-    ])
-
-    reviews.value = fetchedReviews
-    contacts.value = fetchedContacts
-  } catch (error) {
-    console.error(error)
-  }
-})
 </script>
 
 <style scoped>

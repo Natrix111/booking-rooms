@@ -95,7 +95,7 @@
 import {ref, computed, onMounted} from "vue";
 import CatalogRoomsList from "@/components/catalogRooms/CatalogRoomsList.vue";
 import {storeToRefs} from "pinia";
-import {useCatalogRoomsStore} from "@/stores/CatalogRoomsStore.js";
+import {useCatalogRoomsStore} from "@/stores/catalog-rooms-store.js";
 
 const {rooms, filters: filtersList} = storeToRefs(useCatalogRoomsStore())
 const {getFilters} = useCatalogRoomsStore()

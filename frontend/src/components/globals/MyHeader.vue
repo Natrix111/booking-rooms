@@ -2,8 +2,8 @@
   <header class="bg-blue-500 text-white py-4 px-10">
     <div class="mx-auto flex justify-between items-center">
       <div class="flex-grow">
-        <h1 class="text-xl font-bold">{{ mainIfo.title }}</h1>
-        <p>{{ mainIfo.slogan }}</p>
+        <h1 class="text-xl font-bold">{{ headerInfo.title }}</h1>
+        <p>{{ headerInfo.slogan }}</p>
       </div>
       <div class="flex space-x-20 flex-grow">
         <nav class="flex space-x-4 flex-grow">
@@ -16,7 +16,7 @@
           <router-link to="/register">Регистрация</router-link>
         </div>
         <div class="flex space-x-4">
-          <p class="underline">{{ mainIfo.city }}</p>
+          <p class="underline">{{ headerInfo.city }}</p>
         </div>
       </div>
     </div>
@@ -24,18 +24,11 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from "vue";
-import {getMainInfo} from "@/api/header.js";
+import {useMainInfoStore} from "@/stores/main-info-store.js";
+import {storeToRefs} from "pinia";
 
-const mainIfo = ref({
-  title: 'Котейка',
-  slogan: 'Слоган',
-  city: 'Москва',
-})
+const {headerInfo} = storeToRefs(useMainInfoStore())
 
-onMounted(async () => {
-  mainIfo.value = await getMainInfo()
-})
 </script>
 
 <style scoped>

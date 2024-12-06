@@ -1,6 +1,5 @@
 import {defineStore} from "pinia";
 import {computed, ref} from "vue";
-import {api} from "@/api/api.js";
 
 import {getRoomsFromApi} from "@/api/rooms.js";
 import {getFiltersFromApi} from "@/api/filters.js";
