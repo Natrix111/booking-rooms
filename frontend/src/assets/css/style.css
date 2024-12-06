@@ -43,3 +43,22 @@ a:hover {
     padding: 0 15px;
     min-height: calc(100vh - 120px);
 }
+
+.input {
+    border-width: 1px;
+    border-radius: 0.25rem;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+}
+
+.button {
+    @apply px-4 py-2 rounded duration-300;
+}
+
+.button-blue {
+    @apply bg-blue-500 hover:bg-blue-600 text-white;
+}
+
+.button-grey {
+    @apply bg-gray-200 hover:bg-gray-300;
+}
