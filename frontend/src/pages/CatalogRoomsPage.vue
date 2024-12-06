@@ -125,14 +125,12 @@ const applyFilters = async () => {
 }
 
 const sortRooms = async () => {
-  console.log('sort rooms')
   const [sortBy, sortOrder] = selectedSort.value.split(':')
 
   appliedFilters.value.sortBy = sortBy
   appliedFilters.value.sortOrder = sortOrder
 
   sortedAndFilteredRooms.value = await getSortedAndFilteredRooms(appliedFilters.value)
-  console.log('finish')
 }
 
 const resetFilters = () => {
