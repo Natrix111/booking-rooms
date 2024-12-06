@@ -80,9 +80,10 @@
           <select
               v-model="selectedSort"
               class="sort-select"
+              @change="sortRooms"
           >
-            <option value="priceAsc">Цена по возрастанию</option>
-            <option value="priceDesc">Цена по убыванию</option>
+            <option value="price:asc">Цена по возрастанию</option>
+            <option value="price:desc">Цена по убыванию</option>
           </select>
         </div>
         <CatalogRoomsList :rooms="sortedAndFilteredRooms"/>
@@ -98,7 +99,9 @@ import {storeToRefs} from "pinia";
 import {useCatalogRoomsStore} from "@/stores/catalog-rooms-store.js";
 
 const {rooms, filters: filtersList} = storeToRefs(useCatalogRoomsStore())
-const {getFilters} = useCatalogRoomsStore()
+const {getFilters, getSortedAndFilteredRooms} = useCatalogRoomsStore()
+
+const sortedAndFilteredRooms = ref(rooms)
 
 const selectedFilters = ref({
   minPrice: null,
@@ -109,36 +112,27 @@ const selectedFilters = ref({
 
 const appliedFilters = ref({...selectedFilters.value})
 
-const selectedSort = ref("priceAsc")
+const selectedSort = ref("price:asc")
 
-const sortedRooms = computed(() => {
-  switch (selectedSort.value) {
-    case "priceAsc":
-      return [...rooms.value].sort((a, b) => Number(a.price) - Number(b.price));
-    case "priceDesc":
-      return [...rooms.value].sort((a, b) => Number(b.price) - Number(a.price));
-    default:
-      return rooms.value;
-  }
-});
+const applyFilters = async () => {
+  const [sortBy, sortOrder] = selectedSort.value.split(':')
 
-const sortedAndFilteredRooms = computed(() => {
-  return sortedRooms.value
-      .filter((room) => {
-        if (appliedFilters.value.minPrice && room.price < appliedFilters.value.minPrice) return false
-
-        if (appliedFilters.value.maxPrice && room.price > appliedFilters.value.maxPrice) return false
-
-        if (appliedFilters.value.areas.length > 0 && !appliedFilters.value.areas.includes(room.area)) return false
-
-        if (appliedFilters.value.amenities.length > 0 && !appliedFilters.value.amenities.every(feature => room.amenities.includes(feature))) return false
-
-        return true
-      })
-})
-
-const applyFilters = () => {
   appliedFilters.value = {...selectedFilters.value}
+  appliedFilters.value.sortBy = sortBy
+  appliedFilters.value.sortOrder = sortOrder
+
+  sortedAndFilteredRooms.value = await getSortedAndFilteredRooms(appliedFilters.value)
+}
+
+const sortRooms = async () => {
+  console.log('sort rooms')
+  const [sortBy, sortOrder] = selectedSort.value.split(':')
+
+  appliedFilters.value.sortBy = sortBy
+  appliedFilters.value.sortOrder = sortOrder
+
+  sortedAndFilteredRooms.value = await getSortedAndFilteredRooms(appliedFilters.value)
+  console.log('finish')
 }
 
 const resetFilters = () => {
@@ -148,6 +142,8 @@ const resetFilters = () => {
     areas: [],
     amenities: [],
   }
+
+  selectedSort.value = 'price:asc'
 
   applyFilters()
 }
