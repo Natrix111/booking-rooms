@@ -6,7 +6,11 @@
     <h3>{{ room.name }}</h3>
     <p>Цена: {{ room.price }} руб/сутки</p>
     <p>Площадь: {{ room.area }} м²</p>
-    <p>Оснащение: {{ room.amenities.join(', ') }} </p>
+    <div>Оснащение:
+      <span v-for="(amenity, index) in room.amenities" :key="index">
+        {{ amenity.name }}<span v-if="index < room.amenities.length - 1">, </span>
+      </span>
+    </div>
   </article>
 </template>
 
