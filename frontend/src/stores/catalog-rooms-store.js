@@ -32,5 +32,16 @@ export const useCatalogRoomsStore = defineStore('CatalogRoomsStore', () => {
         return rooms.value.filter((room) => room.featured === true)
     })
 
-    return {rooms, filters,  getRooms, getFilters, getRoomsMainPage}
+    const getSortedAndFilteredRooms = async (filters) => {
+        try {
+            const data = await getRoomsFromApi(filters)
+            data.forEach((room) => {room.area = room.dimensions[0] * room.dimensions[1]})
+
+            return data
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    return {rooms, filters,  getRooms, getFilters, getRoomsMainPage, getSortedAndFilteredRooms}
 })
