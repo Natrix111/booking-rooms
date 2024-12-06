@@ -6,7 +6,7 @@ import {getFiltersFromApi} from "@/api/filters.js";
 
 export const useCatalogRoomsStore = defineStore('CatalogRoomsStore', () => {
     const rooms = ref([])
-    const filters = ref([])
+    const filters = ref(JSON.parse(localStorage.getItem('filters')) || [])
 
     const getRooms = async () => {
         try {
@@ -21,6 +21,7 @@ export const useCatalogRoomsStore = defineStore('CatalogRoomsStore', () => {
     const getFilters = async () => {
         try {
             filters.value = await getFiltersFromApi()
+            localStorage.setItem('filters', JSON.stringify(filters.value))
 
         } catch (error) {
             console.error(error);
