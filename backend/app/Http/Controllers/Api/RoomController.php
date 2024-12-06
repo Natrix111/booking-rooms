@@ -31,6 +31,7 @@ class RoomController extends Controller
                 'name' => $room->name,
                 'dimensions' => $room->dimensions,
                 'price' => $room->price,
+                'area' => $room->getSquare(),
                 'photos' => $room->photos,
                 'featured' => $room->featured,
                 'amenities' => $room->amenities->map(function ($amenity) {
@@ -74,23 +75,30 @@ class RoomController extends Controller
         $room = Room::with('amenities')->findOrFail($id);
 
         $otherRooms = Room::where('id', '!=', $id)
+            ->with('amenities')
             ->inRandomOrder()
             ->take(3)
-            ->get();
+            ->get()
+            ->map(function ($room) {
+                $room->area = $room->getSquare();
+
+                return $room;
+            });
+
 
         return response()->json([
             'room' => [
                 'id' => $room->id,
                 'name' => $room->name,
                 'dimensions' => $room->dimensions,
-                'area' => $room->area,
+                'area' => $room->getSquare(),
                 'price' => $room->price,
                 'photos' => $room->photos,
                 'featured' => $room->featured,
                 'amenities' => $room->amenities->map(function ($amenity) {
                     return [
                         'name' => $amenity->name,
-                        'icon' => $amenity->img,
+                        'img' => $amenity->img,
                     ];
                 }),
             ],
