@@ -23,7 +23,7 @@
         <div class="room-info">
           <h2 class="mb-2">{{ room.room.name }}</h2>
           <p><strong>Цена:</strong> {{ room.room.price }} руб/сутки</p>
-          <p><strong>Площадь:</strong> {{ room.room.dimensions[0] * room.room.dimensions[1] }} м²</p>
+          <p><strong>Площадь:</strong> {{ room.room.area }} м²</p>
           <p title="Ширина х Длина х Высота"><strong>Размеры:</strong> {{ room.room.dimensions[0] }}х{{room.room.dimensions[1]}}х{{room.room.dimensions[2]}}</p>
           <p class="pb-2">
             <strong>Оснащение: </strong>
