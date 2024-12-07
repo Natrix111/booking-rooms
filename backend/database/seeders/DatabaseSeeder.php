@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             RoomSeeder::class,
             AmenitySeeder::class,
+            RoomAmenitySeeder::class,
         ]);
     }
 }
