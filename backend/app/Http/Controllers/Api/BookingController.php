@@ -35,6 +35,7 @@ class BookingController extends Controller
             'pets' => json_encode($request->pets), 
         ]);
 
+        
         return response()->json(['message' => 'Бронь успешно создана!', 'booking' => $booking], 201);
     }
 }
