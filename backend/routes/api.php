@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\InformationController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\Api\ImageController;
+use App\Http\Controllers\Api\BookingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,8 @@ Route::get('/info', [InformationController::class, 'index']);
 Route::get('/contact', [ContactController::class, 'index']);
 Route::get('/reviews', [ReviewController::class, 'getRandomReviews']);
 
+Route::post('/bookings', [BookingController::class, 'store'])->middleware('auth:sanctum');
+
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::patch('/contact', [ContactController::class, 'update']);
     Route::patch('/info', [InformationController::class, 'update']);
@@ -43,5 +46,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('rooms', [RoomController::class, 'create']);
     Route::patch('rooms/{id}', [RoomController::class, 'update']);
     Route::delete('rooms/{id}', [RoomController::class, 'delete']);
+
+    Route::get('/bookings', [BookingController::class, 'index']);
 
 });
