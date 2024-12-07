@@ -8,7 +8,7 @@
       <div class="flex space-x-20 flex-grow">
         <nav class="flex space-x-4 flex-grow">
           <router-link to="/">Главная</router-link>
-          <router-link to="/catalog">Каталог</router-link>
+          <router-link to="/rooms">Каталог</router-link>
           <a href="#">Контакты</a>
         </nav>
         <div class="flex space-x-4 ">

@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {computed, ref} from "vue";
 
-import {getRoomsFromApi} from "@/api/rooms.js";
+import {getRoomsFromApi, getRoomByIdFromApi} from "@/api/rooms.js";
 import {getFiltersFromApi} from "@/api/filters.js";
 
 export const useCatalogRoomsStore = defineStore('CatalogRoomsStore', () => {
@@ -39,9 +39,19 @@ export const useCatalogRoomsStore = defineStore('CatalogRoomsStore', () => {
 
             return data
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     }
 
-    return {rooms, filters,  getRooms, getFilters, getRoomsMainPage, getSortedAndFilteredRooms}
+    const getRoomById = async (roomId) => {
+        try {
+            const data = await getRoomByIdFromApi(roomId)
+
+            return data
+        } catch (error) {
+          console.error(error)
+        }
+    }
+
+    return {rooms, filters,  getRooms, getFilters, getRoomsMainPage, getSortedAndFilteredRooms, getRoomById}
 })
