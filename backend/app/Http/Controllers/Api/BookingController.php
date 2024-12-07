@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingRequest;
 use App\Models\Booking;
@@ -10,8 +11,46 @@ use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
-    public function index(){
-        return Booking::all();
+    public function index(Request $request)
+    {
+        $query = Booking::query();
+
+        if ($request->has('room_id')) {
+            $query->where('room_id', $request->input('room_id'));
+        }
+
+        $bookings = $query->with('room')->paginate(10); 
+
+        return response()->json($bookings, 200);
+    }
+
+    
+    public function approve($id)
+    {
+        try {
+            $booking = Booking::findOrFail($id);
+            } catch (\Exception $e) {
+                return response()->json(['errors'=> "Элемента по данному id не существует"],404);
+            }
+        
+        $booking->approved = true;
+        $booking->save();
+
+        return response()->json(['message' => 'Заявка одобрена!'], 200);
+    }
+
+    
+    public function destroy($id)
+    {   
+        try {
+            $booking = Booking::findOrFail($id);
+            } catch (\Exception $e) {
+                return response()->json(['errors'=> "Элемента по данному id не существует"],404);
+            }
+       
+        $booking->delete();
+
+        return response()->json(['message' => 'Заявка удалена!'], 200);
     }
     public function store(BookingRequest $request)
     {
@@ -35,7 +74,7 @@ class BookingController extends Controller
             'pets' => json_encode($request->pets), 
         ]);
 
-        
+
         return response()->json(['message' => 'Бронь успешно создана!', 'booking' => $booking], 201);
     }
 }
