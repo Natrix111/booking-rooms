@@ -6,11 +6,10 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\InformationController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\RoomController;
-use App\Http\Controllers\Api\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/images/{filename}', [ImageController::class, 'show']);
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout']);
 });
@@ -43,5 +42,4 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('rooms', [RoomController::class, 'create']);
     Route::patch('rooms/{id}', [RoomController::class, 'update']);
     Route::delete('rooms/{id}', [RoomController::class, 'delete']);
-
 });

@@ -26,7 +26,7 @@ class RoomController extends Controller
             ->applyFilters($request)
             ->with('amenities')
             ->get();
-        
+
         $rooms = $rooms->map(function ($room) {
             return [
                 'id' => $room->id,
@@ -109,40 +109,35 @@ class RoomController extends Controller
     }
     public function create(RoomRequest $request)
     {
-           
+
         $validatedData = $request->validated();
+
         $validatedData['dimensions'] = [(int)$validatedData['width'], (int)$validatedData['height'], (int)$validatedData['length']];
-            if ($request->hasFile('photos')) {
-                $images = [];
-                foreach ($request->file('photos') as $photo) {
-                    $imgName = uniqid() . '.' . $photo->getClientOriginalExtension();
-                    $photo->move(public_path('images/room'), $imgName);
+        if ($request->hasFile('photos')) {
+            $images = [];
+            foreach ($request->file('photos') as $photo) {
+                $imgName = uniqid() . '.' . $photo->getClientOriginalExtension();
+                $photo->move(public_path('storage/rooms'), $imgName);
 
 
-                    $images[] = 'images/room/' . $imgName;
-                }
-
-                $validatedData['photos'] = json_encode($images);
-            } else {
-                $validatedData['photos'] = json_encode([]);
+                $images[] = 'rooms/' . $imgName;
             }
 
-
-            $room = Room::create($validatedData);
-            if (isset($validatedData['amenities'])) {
-                $room->amenities()->attach($validatedData['amenities']);
-            }
-            return response()->json($room, 201);
+            $validatedData['photos'] = $images;
+        } else {
+            $validatedData['photos'] = [];
+        }
 
 
+        $room = Room::create($validatedData);
 
+        if (isset($validatedData['amenities'])) {
+            $room->amenities()->attach($validatedData['amenities']);
+        }
+        return response()->json($room, 201);
     }
     public function update(RoomRequest $request, $id)
     {
-
-
-
-
         try {
             $room = Room::findOrFail($id);
             } catch (\Exception $e) {
@@ -154,15 +149,15 @@ class RoomController extends Controller
                 $images = [];
                 foreach ($request->file('photos') as $photo) {
                     $imgName = uniqid() . '.' . $photo->getClientOriginalExtension();
-                    $photo->move(public_path('images/room'), $imgName);
+                    $photo->move(public_path('storage/rooms'), $imgName);
 
 
                     $images[] = 'images/room/' . $imgName;
                 }
 
-                $validatedData['photos'] = json_encode($images);
+                $validatedData['photos'] = $images;
             } else {
-                $validatedData['photos'] = json_encode([]);
+                $validatedData['photos'] = [];
             }
 
             $room->update($validatedData);

@@ -11,7 +11,7 @@ class RoomRequest extends FormRequest
 {
     public function authorize()
     {
-        return true; 
+        return true;
     }    public function rules(): array
     {
         return [
@@ -20,11 +20,10 @@ class RoomRequest extends FormRequest
             'height' => $this->isMethod('post') ? 'required|string' : 'nullable|integer|min:1',
             'length' => $this->isMethod('post') ? 'required|string' : 'nullable|integer|min:1',
             'amenities' => 'nullable|array',
-            'amenities.*' => 'nullable|integer|exists:amenities,id', 
+            'amenities.*' => 'nullable|integer|exists:amenities,id',
             'price' => $this->isMethod('post') ? 'required|string' : 'nullable|numeric',
             'photos' => 'nullable|array|max:5',
-            'photos.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'featured' => 'boolean',
+            'photos.*' => 'image|mimes:jpeg,png,jpg,gif',
         ];
     }    public function messages(): array
     {
