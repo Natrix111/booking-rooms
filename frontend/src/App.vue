@@ -5,10 +5,8 @@ import {onMounted} from "vue";
 
 import {useCatalogRoomsStore} from "@/stores/catalog-rooms-store.js";
 import {useMainInfoStore} from "@/stores/main-info-store.js";
-import {useAuthStore} from "@/stores/auth-store.js";
 
 const {getRooms} = useCatalogRoomsStore()
-const {getAuth} = useAuthStore()
 const {getReviews, getContacts, getHeader} = useMainInfoStore()
 
 onMounted(() => {
@@ -16,7 +14,6 @@ onMounted(() => {
   getReviews()
   getContacts()
   getHeader()
-  getAuth()
 })
 </script>
 

@@ -1,38 +1,21 @@
 <script setup>
 import AuthorizationForm from "@/components/form/AuthorizationForm.vue";
-
-
-
-// const token = localStorage.token
-import { useAuthStore } from '@/stores/auth-store';
-import { storeToRefs } from 'pinia';
+import {useAuthStore} from '@/stores/auth-store';
+import {storeToRefs} from 'pinia';
 
 const authStore = useAuthStore();
-
-// Извлекаем свойства и методы через деструктуризацию
-const { token, isAuth } = storeToRefs(authStore);
-// const { setToken, clearToken } = authStore;
-
-// // Логин
-// function login() {
-//   setToken('example-token'); // Устанавливаем токен
-// }
-//
-// // Логаут
-// function logout() {
-//   clearToken(); // Удаляем токен
-// }
+const {isAuth} = storeToRefs(authStore);
 
 </script>
 
 <template>
-  <main  class="rounded-2xl border-2 py-5 bg-white ">
+  <main class="rounded-2xl border-2 py-5 bg-white ">
     <div v-if="!isAuth">
       <h2 class="text-center my-4">Авторизация</h2>
 
-      <AuthorizationForm />
+      <AuthorizationForm/>
     </div>
-    <div v-if="isAuth" >
+    <div v-if="isAuth">
       <h1 class="text-center my-4">Вы авторизованы</h1>
     </div>
   </main>

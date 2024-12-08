@@ -28,12 +28,10 @@
 
 <script setup>
 import {useMainInfoStore} from "@/stores/main-info-store.js";
-import { useAuthStore } from '@/stores/auth-store';
+import {useAuthStore} from '@/stores/auth-store';
 import {storeToRefs} from "pinia";
 
-const authStore = useAuthStore();
-const {isAuth } = storeToRefs(authStore);
-
+const {isAuth} = storeToRefs(useAuthStore());
 const {headerInfo} = storeToRefs(useMainInfoStore())
 
 </script>
