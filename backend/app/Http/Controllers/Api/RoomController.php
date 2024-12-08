@@ -7,8 +7,6 @@ use App\Models\Room;
 use App\Services\RoomFilterService;
 use Illuminate\Http\Request;
 use App\Models\Amenity;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
 
 use App\Http\Requests\RoomRequest;
 
@@ -62,7 +60,7 @@ class RoomController extends Controller
             ->sort()
             ->values();
 
-        $amenities = Amenity::pluck('name')->unique()->values();
+        $amenities = Amenity::select('id', 'name')->get();
 
         return response()->json([
             'min_price' => $minPrice,
