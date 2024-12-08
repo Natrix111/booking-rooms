@@ -628,6 +628,24 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Просмотр изображений",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/images/674f32e3104ab.jpg",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"images",
+						"674f32e3104ab.jpg"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [

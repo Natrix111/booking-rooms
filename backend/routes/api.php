@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout']);
 });
@@ -30,8 +31,8 @@ Route::get('/contact', [ContactController::class, 'index']);
 Route::get('/reviews', [ReviewController::class, 'getRandomReviews']);
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    Route::put('/contact', [ContactController::class, 'update']);
-    Route::put('/info', [InformationController::class, 'update']);
+    Route::patch('/contact', [ContactController::class, 'update']);
+    Route::patch('/info', [InformationController::class, 'update']);
 
     Route::get('/amentities', [AmenityController::class, 'index']);
     Route::post('/amentities', [AmenityController::class, 'create']);
@@ -41,5 +42,4 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('rooms', [RoomController::class, 'create']);
     Route::patch('rooms/{id}', [RoomController::class, 'update']);
     Route::delete('rooms/{id}', [RoomController::class, 'delete']);
-
 });

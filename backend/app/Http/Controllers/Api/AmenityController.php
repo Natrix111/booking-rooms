@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Amenity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\AmenityRequest;
 
 class AmenityController extends Controller
 {
@@ -13,17 +14,8 @@ class AmenityController extends Controller
     {
         return Amenity::all();
     }
-    public function create(Request $request)
+    public function create(AmenityRequest $request)
     {
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'img' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
 
         $amenity = new Amenity();
 
@@ -47,21 +39,11 @@ class AmenityController extends Controller
         return response()->json($amenity, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(AmenityRequest $request, $id)
     {
 
 
         $amenity = Amenity::findOrFail($id);
-
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'nullable|string',
-            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
 
 
         if ($request->has('name')) {

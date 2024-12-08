@@ -19,7 +19,8 @@
 4. Для запуска окружения введите команды:
 ```bash
       docker-compose up -d --build
-      docker-compose exec app composer install
+      docker-compose exec app composer install 
+      docker-compose exec app chown -R www-data:www-data storage/ public/ 
 ```
 
 5. Для запуска миграция и заполнения базы данных тестовыми данными введите команды:
