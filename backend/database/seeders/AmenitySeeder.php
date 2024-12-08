@@ -13,7 +13,7 @@ class AmenitySeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('amentities')->insert([
+        DB::table('amenities')->insert([
             [
                 'name' => 'TV',
                 'img' => 'TV.png'
@@ -21,7 +21,19 @@ class AmenitySeeder extends Seeder
             [
                 'name'=> 'WiFi',
                 'img'=>'wifi.png'
-            ]
+            ],
+            [
+                'name'=> 'Minibar',
+                'img'=>'minibar.png'
+            ],
+            [
+                'name'=> 'Air Conditioning',
+                'img'=>'airconditioning.png'
+            ],
+            [
+                'name'=> 'Safe',
+                'img'=>'safe.png'
+            ],
         ]);
     }
 }

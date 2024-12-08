@@ -2,8 +2,8 @@
   <header class="bg-blue-500 text-white py-4 px-10">
     <div class="mx-auto flex justify-between items-center">
       <div class="flex-grow">
-        <h1 class="text-xl font-bold">{{ mainIfo.title }}</h1>
-        <p>{{ mainIfo.slogan }}</p>
+        <h1 class="text-xl font-bold">{{ headerInfo.title }}</h1>
+        <p>{{ headerInfo.slogan }}</p>
       </div>
       <div class="flex space-x-20 flex-grow">
         <nav class="flex space-x-4 flex-grow">
@@ -12,11 +12,14 @@
           <a href="#">Контакты</a>
         </nav>
         <div class="flex space-x-4 ">
-          <router-link to="/login">Вход</router-link>
-          <router-link to="/register">Регистрация</router-link>
+          <router-link v-if="!isAuth" to="/login">Вход</router-link>
+          <router-link v-if="!isAuth" to="/register">Регистрация</router-link>
+          <router-link v-if="isAuth" to="/profile">Профиль</router-link>
+          <router-link v-if="isAuth" to="/logout">Выход из аккаунта</router-link>
+
         </div>
         <div class="flex space-x-4">
-          <p class="underline">{{ mainIfo.city }}</p>
+          <p class="underline">{{ headerInfo.city }}</p>
         </div>
       </div>
     </div>
@@ -24,30 +27,15 @@
 </template>
 
 <script setup>
-import axios from "axios";
-import {onMounted, ref} from "vue";
-import {useMainStore} from "@/stores/MainStore.js";
+import {useMainInfoStore} from "@/stores/main-info-store.js";
+import { useAuthStore } from '@/stores/auth-store';
+import {storeToRefs} from "pinia";
 
-const {api} = useMainStore();
+const authStore = useAuthStore();
+const {isAuth } = storeToRefs(authStore);
 
-const mainIfo = ref({
-  title: 'Котейка',
-  slogan: 'Слоган',
-  city: 'Москва',
-})
+const {headerInfo} = storeToRefs(useMainInfoStore())
 
-const getMainInfo = async () => {
-  try {
-    const { data } = await axios.get(`${api}/info`)
-    return data[0]
-  }catch(error) {
-    console.error(error)
-  }
-}
-
-onMounted(async () => {
-  mainIfo.value = await getMainInfo()
-})
 </script>
 
 <style scoped>

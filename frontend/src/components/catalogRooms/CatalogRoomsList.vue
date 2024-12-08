@@ -1,6 +1,6 @@
 <template>
   <h2><slot></slot></h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="grid-list">
     <CatalogListItem
         v-for="room in rooms"
         :key="room.id"
@@ -21,4 +21,9 @@ const props = defineProps({
 </script>
 
 <style scoped>
+
+.grid-list {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
 </style>

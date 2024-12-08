@@ -1,12 +1,16 @@
 <template>
-  <article class="bg-white p-4 hover:shadow-lg duration-300">
+  <article class="item">
     <img :src="props.room.photos ? props.room.photos[0] : defaultPreview"
          alt="Фото номера"
-         class="w-full h-40 object-cover" />
-    <h3>{{ props.room.name }}</h3>
-    <p>Цена: {{ props.room.price }} руб/сутки</p>
-    <p>Площадь: {{ props.room.area }} м²</p>
-    <p>Оснащение: {{ props.room.amenities.join(', ') }} </p>
+         class="item-image" />
+    <h3>{{ room.name }}</h3>
+    <p>Цена: {{ room.price }} руб/сутки</p>
+    <p>Площадь: {{ room.area }} м²</p>
+    <div>Оснащение:
+      <span v-for="(amenity, index) in room.amenities" :key="index">
+        {{ amenity.name }}<span v-if="index < room.amenities.length - 1">, </span>
+      </span>
+    </div>
   </article>
 </template>
 
@@ -22,4 +26,11 @@ const props = defineProps({
 </script>
 
 <style scoped>
+.item {
+  @apply bg-white p-4 rounded hover:shadow-lg duration-300;
+}
+
+.item-image {
+  @apply w-full h-40 object-cover;
+}
 </style>

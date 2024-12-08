@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->json('dimensions');
-            $table->json('amenities')->nullable();
             $table->decimal('price', 7, 2);
             $table->json('photos')->nullable();
             $table->boolean('featured')->default(false);

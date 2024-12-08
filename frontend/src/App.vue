@@ -2,12 +2,21 @@
 import MyHeader from "@/components/globals/MyHeader.vue";
 import MyFooter from "@/components/globals/MyFooter.vue";
 import {onMounted} from "vue";
-import {useCatalogRoomsStore} from "@/stores/CatalogRoomsStore.js";
+
+import {useCatalogRoomsStore} from "@/stores/catalog-rooms-store.js";
+import {useMainInfoStore} from "@/stores/main-info-store.js";
+import {useAuthStore} from "@/stores/auth-store.js";
 
 const {getRooms} = useCatalogRoomsStore()
+const {getAuth} = useAuthStore()
+const {getReviews, getContacts, getHeader} = useMainInfoStore()
 
-onMounted(async () => {
-  await getRooms()
+onMounted(() => {
+  getRooms()
+  getReviews()
+  getContacts()
+  getHeader()
+  getAuth()
 })
 </script>
 
