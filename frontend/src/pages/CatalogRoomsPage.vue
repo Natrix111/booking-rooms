@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="flex">
+    <div class="flex items-start">
       <aside class="aside">
         <h3 class="mb-4">Фильтры</h3>
         <form @submit.prevent="applyFilters" class="space-y-4">
@@ -43,15 +43,15 @@
           <div>
             <h4 class="font-bold mb-2">Оснащение</h4>
             <div class="space-y-2">
-              <div v-for="amenity in filtersList.amenities" :key="amenity">
+              <div v-for="amenity in filtersList.amenities" :key="amenity.id">
                 <label>
                   <input
                       type="checkbox"
-                      :value="amenity"
+                      :value="amenity.name"
                       v-model="selectedFilters.amenities"
                       class="mr-2"
                   />
-                  {{ amenity }}
+                  {{ amenity.name }}
                 </label>
               </div>
             </div>

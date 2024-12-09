@@ -131,6 +131,8 @@ import { useRouter } from 'vue-router'
 const {filters: filtersList} = storeToRefs(useCatalogRoomsStore())
 const {getRooms, getFilters} = useCatalogRoomsStore()
 
+const token = '4|ci5Zo7JpzPwOXOedowo4bvchzoX7DhwS6r6okqNf0ef4bd3e'
+
 const form = ref({
   name: '',
   amenities: [],
@@ -149,9 +151,14 @@ const isCreate = ref(false)
 const idCreatedRoom = ref(null)
 
 const handlePhotoUpload = (event) => {
+  errors.value.photos = ''
   const files = Array.from(event.target.files)
+
   if (files.length > 5) {
     errors.value.photos = 'Можно загрузить не более 5 фото.'
+    event.target.value = ''
+    form.value.photos = []
+
     return
   }
 
@@ -159,6 +166,9 @@ const handlePhotoUpload = (event) => {
 
   if (validFiles.length !== files.length) {
     errors.value.photos = 'Некоторые файлы имеют недопустимый размер или формат.'
+    event.target.value = ''
+    form.value.photos = []
+
     return
   }
 
@@ -183,8 +193,6 @@ const validateForm = () => {
   }
   return Object.keys(errors.value).length === 0
 }
-
-const token = '4|ci5Zo7JpzPwOXOedowo4bvchzoX7DhwS6r6okqNf0ef4bd3e'
 
 const submitRoomForm = async () => {
   if (!validateForm()) return
