@@ -14,6 +14,7 @@
         <div class="flex space-x-4 ">
           <router-link to="/login">Вход</router-link>
           <router-link to="/register">Регистрация</router-link>
+          <router-link to="/rooms/create">Создать комнату</router-link>
         </div>
         <div class="flex space-x-4">
           <p class="underline">{{ headerInfo.city }}</p>

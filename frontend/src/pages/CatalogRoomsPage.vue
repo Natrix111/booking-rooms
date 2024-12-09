@@ -43,15 +43,15 @@
           <div>
             <h4 class="font-bold mb-2">Оснащение</h4>
             <div class="space-y-2">
-              <div v-for="amenty in filtersList.amenities" :key="amenty">
+              <div v-for="amenity in filtersList.amenities" :key="amenity">
                 <label>
                   <input
                       type="checkbox"
-                      :value="amenty"
+                      :value="amenity"
                       v-model="selectedFilters.amenities"
                       class="mr-2"
                   />
-                  {{ amenty }}
+                  {{ amenity }}
                 </label>
               </div>
             </div>
@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted} from "vue";
+import {ref, onMounted} from "vue";
 import CatalogRoomsList from "@/components/catalogRooms/CatalogRoomsList.vue";
 import {storeToRefs} from "pinia";
 import {useCatalogRoomsStore} from "@/stores/catalog-rooms-store.js";
