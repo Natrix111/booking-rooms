@@ -110,13 +110,21 @@ class RoomController extends Controller
 
         $validatedData = $request->validated();
 
-        $validatedData['dimensions'] = [(int)$validatedData['width'], (int)$validatedData['height'], (int)$validatedData['length']];
+        if($validatedData['featured'] === "true") {
+            $validatedData['featured'] = true;
+        }
+
+        $validatedData['dimensions'] = [
+            (int)$validatedData['width'],
+            (int)$validatedData['height'],
+            (int)$validatedData['length']
+        ];
+
         if ($request->hasFile('photos')) {
             $images = [];
             foreach ($request->file('photos') as $photo) {
                 $imgName = uniqid() . '.' . $photo->getClientOriginalExtension();
                 $photo->move(public_path('storage/rooms'), $imgName);
-
 
                 $images[] = 'rooms/' . $imgName;
             }
@@ -142,6 +150,11 @@ class RoomController extends Controller
                 return response()->json(['errors'=> "Элемента по данному id не существует"],404);
             }
             $validatedData = $request->validated();
+
+            if($validatedData['featured'] === "true") {
+                $validatedData['featured'] = true;
+            }
+
             $validatedData['dimensions'] = [(int)$validatedData['width'], (int)$validatedData['height'], (int)$validatedData['length']];
             if ($request->hasFile('photos')) {
                 $images = [];
