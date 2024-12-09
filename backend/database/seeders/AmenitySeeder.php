@@ -16,23 +16,23 @@ class AmenitySeeder extends Seeder
         DB::table('amenities')->insert([
             [
                 'name' => 'TV',
-                'img' => 'TV.png'
+                'img' => 'icons/TV.png'
             ],
             [
                 'name'=> 'WiFi',
-                'img'=>'wifi.png'
+                'img'=>'icons/wifi.png'
             ],
             [
                 'name'=> 'Minibar',
-                'img'=>'minibar.png'
+                'img'=>'icons/minibar.png'
             ],
             [
                 'name'=> 'Air Conditioning',
-                'img'=>'airconditioning.png'
+                'img'=>'icons/airconditioning.png'
             ],
             [
                 'name'=> 'Safe',
-                'img'=>'safe.png'
+                'img'=>'icons/safe.png'
             ],
         ]);
     }
