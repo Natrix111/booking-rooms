@@ -184,7 +184,7 @@ const validateForm = () => {
   return Object.keys(errors.value).length === 0
 }
 
-const token = '3|ggwTmBCbAvXmTVhefbiR4fqtNNYRMdEtvCcuhxQs7f6779ed'
+const token = '4|ci5Zo7JpzPwOXOedowo4bvchzoX7DhwS6r6okqNf0ef4bd3e'
 
 const submitRoomForm = async () => {
   if (!validateForm()) return
@@ -226,6 +226,7 @@ const submitRoomForm = async () => {
 
   } catch (error) {
     console.error(error)
+    isLoading.value = false
   }
 }
 
