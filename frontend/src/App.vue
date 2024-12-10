@@ -25,6 +25,7 @@ onMounted(() => {
   </div>
   <MyFooter/>
 </div>
+
 </template>
 
 <style scoped>
