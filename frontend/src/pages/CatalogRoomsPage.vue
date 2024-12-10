@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="flex">
+    <div class="flex items-start">
       <aside class="aside">
         <h3 class="mb-4">Фильтры</h3>
         <form @submit.prevent="applyFilters" class="space-y-4">
@@ -43,15 +43,15 @@
           <div>
             <h4 class="font-bold mb-2">Оснащение</h4>
             <div class="space-y-2">
-              <div v-for="amenty in filtersList.amenities" :key="amenty">
+              <div v-for="amenity in filtersList.amenities" :key="amenity.id">
                 <label>
                   <input
                       type="checkbox"
-                      :value="amenty"
+                      :value="amenity.name"
                       v-model="selectedFilters.amenities"
                       class="mr-2"
                   />
-                  {{ amenty }}
+                  {{ amenity.name }}
                 </label>
               </div>
             </div>
@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted} from "vue";
+import {ref, onMounted} from "vue";
 import CatalogRoomsList from "@/components/catalogRooms/CatalogRoomsList.vue";
 import {storeToRefs} from "pinia";
 import {useCatalogRoomsStore} from "@/stores/catalog-rooms-store.js";

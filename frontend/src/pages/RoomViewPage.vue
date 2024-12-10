@@ -8,12 +8,12 @@
         <div class="w-full md:w-1/2">
           <div class="slider">
             <img
-                :src="room.room.photos[0]"
+                :src="room.room.photos[0] ?`${storageUrl}${room.room.photos[0]}` : defaultPreview"
                 class="current-image">
-            <div class="slider-item">
+            <div class="slider-items">
               <img
                   v-for="image in room.room.photos"
-                  :src="image"
+                  :src="`${storageUrl}${image}`"
                   alt="Room Image"
                   class="image"
               />
@@ -49,8 +49,11 @@ import { useCatalogRoomsStore } from "@/stores/catalog-rooms-store.js";
 import { onMounted, ref, watch } from "vue";
 import CatalogRoomsList from "@/components/catalogRooms/CatalogRoomsList.vue";
 import { useRoute } from "vue-router";
+import defaultPreview from "@/assets/image/catalogRooms/default-preview.jpg"
 
 const { getRoomById } = useCatalogRoomsStore();
+
+const storageUrl = import.meta.env.VITE_API_STORAGE
 
 const room = ref({});
 const isLoading = ref(true)
@@ -85,11 +88,11 @@ watch(() => route.params.id,
 }
 
 .current-image {
-  @apply w-full h-96 object-cover;
+  @apply w-full h-96 object-contain;
 }
 
-.slider-item {
-  @apply flex space-x-1;
+.slider-items {
+  @apply grid grid-cols-4 gap-4;
 }
 
 .image {

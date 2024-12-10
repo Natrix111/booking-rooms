@@ -2,7 +2,8 @@
   <article
       @click="$router.push(`/rooms/${room.id}`)"
       class="item">
-    <img :src="props.room.photos ? props.room.photos[0] : defaultPreview"
+    <img
+        :src="room.photos[0] ? `${storageUrl}${props.room.photos[0]}` : defaultPreview"
          alt="Фото номера"
          class="item-image" />
     <h3>{{ room.name }}</h3>
@@ -19,6 +20,8 @@
 <script setup>
 import defaultPreview from "@/assets/image/catalogRooms/default-preview.jpg"
 
+const storageUrl = import.meta.env.VITE_API_STORAGE
+
 const props = defineProps({
   room: {
     required: true,
@@ -29,7 +32,7 @@ const props = defineProps({
 
 <style scoped>
 .item {
-  @apply bg-white p-4 rounded hover:shadow-lg duration-300 cursor-pointer;
+  @apply bg-white p-4 rounded hover:shadow-lg duration-300 cursor-pointer overflow-hidden;
 }
 
 .item-image {
