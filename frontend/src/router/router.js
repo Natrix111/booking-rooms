@@ -6,6 +6,7 @@ import AuthorizationPage from "@/pages/AuthorizationPage.vue";
 import ProfilePage from "@/pages/ProfilePage.vue";
 import RoomViewPage from "@/pages/RoomViewPage.vue";
 import RoomCreatePage from "@/pages/RoomCreatePage.vue";
+import RegisterPage from "../pages/RegisterPage.vue";
 
 
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
     { path: '/rooms/:id', component: RoomViewPage },
     { path: '/rooms/create', component: RoomCreatePage },
     { path: '/login', component: AuthorizationPage },
+    { path: '/register', component: RegisterPage },
     { path: '/profile', component: ProfilePage },
 ]
 

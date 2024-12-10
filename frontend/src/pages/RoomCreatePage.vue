@@ -131,8 +131,6 @@ import { useRouter } from 'vue-router'
 const {filters: filtersList} = storeToRefs(useCatalogRoomsStore())
 const {getRooms, getFilters} = useCatalogRoomsStore()
 
-const token = '4|ci5Zo7JpzPwOXOedowo4bvchzoX7DhwS6r6okqNf0ef4bd3e'
-
 const form = ref({
   name: '',
   amenities: [],
