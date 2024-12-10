@@ -8,7 +8,9 @@ import ProfilePage from "@/pages/ProfilePage.vue";
 
 const routes = [
     { path: '/', component: MainPage },
-    { path: '/catalog', component: CatalogRoomsPage },
+    { path: '/rooms', component: CatalogRoomsPage },
+    { path: '/rooms/:id', component: RoomViewPage },
+    { path: '/rooms/create', component: RoomCreatePage },
     { path: '/login', component: AuthorizationPage },
     { path: '/profile', component: ProfilePage },
 ]

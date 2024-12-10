@@ -7,8 +7,8 @@ use App\Models\Room;
 use App\Services\RoomFilterService;
 use Illuminate\Http\Request;
 use App\Models\Amenity;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
+
+use App\Http\Requests\RoomRequest;
 
 class RoomController extends Controller
 {
@@ -31,6 +31,7 @@ class RoomController extends Controller
                 'name' => $room->name,
                 'dimensions' => $room->dimensions,
                 'price' => $room->price,
+                'area' => $room->getSquare(),
                 'photos' => $room->photos,
                 'featured' => $room->featured,
                 'amenities' => $room->amenities->map(function ($amenity) {
@@ -59,7 +60,7 @@ class RoomController extends Controller
             ->sort()
             ->values();
 
-        $amenities = Amenity::pluck('name')->unique()->values();
+        $amenities = Amenity::select('id', 'name')->get();
 
         return response()->json([
             'min_price' => $minPrice,
@@ -74,119 +75,100 @@ class RoomController extends Controller
         $room = Room::with('amenities')->findOrFail($id);
 
         $otherRooms = Room::where('id', '!=', $id)
+            ->with('amenities')
             ->inRandomOrder()
             ->take(3)
-            ->get();
+            ->get()
+            ->map(function ($room) {
+                $room->area = $room->getSquare();
+
+                return $room;
+            });
+
 
         return response()->json([
             'room' => [
                 'id' => $room->id,
                 'name' => $room->name,
                 'dimensions' => $room->dimensions,
-                'area' => $room->area,
+                'area' => $room->getSquare(),
                 'price' => $room->price,
                 'photos' => $room->photos,
                 'featured' => $room->featured,
                 'amenities' => $room->amenities->map(function ($amenity) {
                     return [
                         'name' => $amenity->name,
-                        'icon' => $amenity->img,
+                        'img' => $amenity->img,
                     ];
                 }),
             ],
             'otherRooms' => $otherRooms,
         ]);
     }
-    public function create(Request $request)
+    public function create(RoomRequest $request)
     {
-            $validator = Validator::make($request->all(),([
-                'name' => 'required|string',
-                'width' => 'required|integer|min:1',
-                'height' => 'required|integer|min:1',
-                'length' => 'required|integer|min:1',
-                'amenities' => [
-                    'nullable',
-                    'array',
-                    Rule::in(Amenity::pluck('name')->toArray()), // Гарантирует, что значения из amenities существуют в базе данных
-                ],
-                'price' => 'required|numeric',
-                'photos' => 'nullable|array|max:5',
-                'photos.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                'featured' => 'boolean',
-            ]));
-            if ($validator->fails()) {
-                return response()->json(['errors' => $validator->errors()], 400);
-            }
-            $validatedData = $validator->validated();
-            $validatedData['dimensions'] = json_encode([$validatedData['width'], $validatedData['height'], $validatedData['length']]);
 
-            if ($request->hasFile('photos')) {
-                $images = [];
-                foreach ($request->file('photos') as $photo) {
-                    $imgName = uniqid() . '.' . $photo->getClientOriginalExtension();
-                    $photo->move(public_path('images/room'), $imgName);
+        $validatedData = $request->validated();
 
+        if($validatedData['featured'] === "true") {
+            $validatedData['featured'] = true;
+        }
 
-                    $images[] = 'images/room/' . $imgName;
-                }
+        $validatedData['dimensions'] = [
+            (int)$validatedData['width'],
+            (int)$validatedData['height'],
+            (int)$validatedData['length']
+        ];
 
-                $validatedData['photos'] = json_encode($images);
-            } else {
-                $validatedData['photos'] = json_encode([]);
+        if ($request->hasFile('photos')) {
+            $images = [];
+            foreach ($request->file('photos') as $photo) {
+                $imgName = uniqid() . '.' . $photo->getClientOriginalExtension();
+                $photo->move(public_path('storage/rooms'), $imgName);
+
+                $images[] = 'rooms/' . $imgName;
             }
 
-
-            $room = Room::create($validatedData);
-
-            return response()->json($room, 201);
-
-
-
-    }
-    public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'width' => 'required|integer|min:1',
-            'height' => 'required|integer|min:1',
-            'length' => 'required|integer|min:1',
-            'amenities' => [
-                'nullable',
-                'array',
-                Rule::in(Amenity::pluck('name')->toArray()),
-            ],
-            'price' => 'required|numeric',
-            'photos' => 'nullable|array|max:5',
-            'photos.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'featured' => 'boolean',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
+            $validatedData['photos'] = $images;
+        } else {
+            $validatedData['photos'] = [];
         }
 
 
+        $room = Room::create($validatedData);
+
+        if (isset($validatedData['amenities'])) {
+            $room->amenities()->attach($validatedData['amenities']);
+        }
+        return response()->json($room, 201);
+    }
+    public function update(RoomRequest $request, $id)
+    {
         try {
             $room = Room::findOrFail($id);
             } catch (\Exception $e) {
                 return response()->json(['errors'=> "Элемента по данному id не существует"],404);
             }
-            $validatedData = $validator->validated();
+            $validatedData = $request->validated();
 
-            $validatedData['dimensions'] = json_encode([$validatedData['width'], $validatedData['height'], $validatedData['length']]);
+            if($validatedData['featured'] === "true") {
+                $validatedData['featured'] = true;
+            }
+
+            $validatedData['dimensions'] = [(int)$validatedData['width'], (int)$validatedData['height'], (int)$validatedData['length']];
             if ($request->hasFile('photos')) {
                 $images = [];
                 foreach ($request->file('photos') as $photo) {
                     $imgName = uniqid() . '.' . $photo->getClientOriginalExtension();
-                    $photo->move(public_path('images/room'), $imgName);
+                    $photo->move(public_path('storage/rooms'), $imgName);
 
 
                     $images[] = 'images/room/' . $imgName;
                 }
 
-                $validatedData['photos'] = json_encode($images);
+                $validatedData['photos'] = $images;
             } else {
-                $validatedData['photos'] = json_encode([]);
+                $validatedData['photos'] = [];
             }
 
             $room->update($validatedData);

@@ -15,6 +15,11 @@ class RoomFilterService
             $query->where('price', '>=', $request->min_price);
         }
 
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+
         if ($request->filled('areas')) {
             $areas = explode(',', $request->areas);
             $query->where(function ($query) use ($areas) {
@@ -22,10 +27,6 @@ class RoomFilterService
                     $query->orWhereRaw('(dimensions->>0)::int * (dimensions->>1)::int = ?', [(int)$area]);
                 }
             });
-        }
-
-        if ($request->filled('max_area')) {
-            $query->whereRaw('(dimensions->>0)::int * (dimensions->>1)::int <= ?', [$request->max_area]);
         }
 
         if ($request->filled('amenities')) {

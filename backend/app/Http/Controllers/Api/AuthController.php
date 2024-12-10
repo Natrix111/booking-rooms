@@ -15,14 +15,24 @@ class AuthController extends Controller
 {
     public function register(RegisterRequest $request)
     {
+        $avatarPath = null;
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $avatarName = uniqid() . '.' . $avatar->getClientOriginalExtension();
+            $avatar->move(public_path('storage/avatars'), $avatarName);
+            $avatarPath = 'avatars/' . $avatarName;
+        }
+
         $user = User::create([
-            'name'=> $request->name,
+            'name' => $request->name,
             'phone' => $request->phone,
-            'email'=>$request->email,
-            'password'=>Hash::make($request->password),
-//            'avatar' => $avatarPath, // с аватарками попозже разберусь хз че тут делать
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'avatar' => $avatarPath,
         ]);
+
         $token = $user->createToken('token')->plainTextToken;
+
         return response()->json([
             'user' => new RegisterResource($user),
             'user_token' => $token,

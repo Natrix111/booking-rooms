@@ -8,7 +8,7 @@
       <div class="flex space-x-20 flex-grow">
         <nav class="flex space-x-4 flex-grow">
           <router-link to="/">Главная</router-link>
-          <router-link to="/catalog">Каталог</router-link>
+          <router-link to="/rooms">Каталог</router-link>
           <a href="#">Контакты</a>
         </nav>
         <div class="flex space-x-4 ">
@@ -16,7 +16,7 @@
           <router-link v-if="!isAuth" to="/register">Регистрация</router-link>
           <router-link v-if="isAuth" to="/profile">Профиль</router-link>
           <router-link v-if="isAuth" to="/logout">Выход из аккаунта</router-link>
-
+          <router-link v-if="isAuth" to="/rooms/create">Создать комнату</router-link>
         </div>
         <div class="flex space-x-4">
           <p class="underline">{{ headerInfo.city }}</p>

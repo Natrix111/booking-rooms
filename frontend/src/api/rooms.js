@@ -26,3 +26,14 @@ export const getRoomsFromApi = async (filters = null) => {
         console.error(error);
     }
 }
+
+export const getRoomByIdFromApi = async (roomId) => {
+    try {
+        const {data} = await api.get(`rooms/${roomId}`)
+
+        return data
+
+    } catch (error) {
+        console.error(error);
+    }
+}
