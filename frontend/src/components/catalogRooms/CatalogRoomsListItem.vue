@@ -19,8 +19,7 @@
 
 <script setup>
 import defaultPreview from "@/assets/image/catalogRooms/default-preview.jpg"
-
-const storageUrl = import.meta.env.VITE_API_STORAGE
+import {storageUrl} from "@/api/api.js";
 
 const props = defineProps({
   room: {

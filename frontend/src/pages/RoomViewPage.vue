@@ -50,10 +50,9 @@ import { onMounted, ref, watch } from "vue";
 import CatalogRoomsList from "@/components/catalogRooms/CatalogRoomsList.vue";
 import { useRoute } from "vue-router";
 import defaultPreview from "@/assets/image/catalogRooms/default-preview.jpg"
+import {storageUrl} from "@/api/api.js";
 
 const { getRoomById } = useCatalogRoomsStore();
-
-const storageUrl = import.meta.env.VITE_API_STORAGE
 
 const room = ref({});
 const isLoading = ref(true)
