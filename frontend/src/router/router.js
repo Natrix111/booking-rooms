@@ -2,8 +2,10 @@ import { createWebHistory, createRouter } from 'vue-router'
 
 import MainPage from "@/pages/MainPage.vue";
 import CatalogRoomsPage from "@/pages/CatalogRoomsPage.vue";
-import AuthorizationPage from "../pages/AuthorizationPage.vue";
+import AuthorizationPage from "@/pages/AuthorizationPage.vue";
 import ProfilePage from "@/pages/ProfilePage.vue";
+import RoomViewPage from "@/pages/RoomViewPage.vue";
+import RoomCreatePage from "@/pages/RoomCreatePage.vue";
 
 
 const routes = [

@@ -11,12 +11,16 @@
           <router-link to="/rooms">Каталог</router-link>
           <a href="#">Контакты</a>
         </nav>
-        <div class="flex space-x-4 ">
-          <router-link v-if="!isAuth" to="/login">Вход</router-link>
-          <router-link v-if="!isAuth" to="/register">Регистрация</router-link>
-          <router-link v-if="isAuth" to="/profile">Профиль</router-link>
-          <router-link v-if="isAuth" to="/logout">Выход из аккаунта</router-link>
-          <router-link v-if="isAuth" to="/rooms/create">Создать комнату</router-link>
+        <div>
+          <div v-if="!isAuth" class="flex space-x-4">
+            <router-link to="/login">Вход</router-link>
+            <router-link to="/register">Регистрация</router-link>
+          </div>
+          <div v-if="isAuth" class="flex space-x-4">
+            <router-link to="/profile">Профиль</router-link>
+            <router-link to="/rooms/create">Создать комнату</router-link>
+            <button @click="logout">Выйти</button>
+          </div>
         </div>
         <div class="flex space-x-4">
           <p class="underline">{{ headerInfo.city }}</p>
@@ -32,9 +36,17 @@ import {useAuthStore} from '@/stores/auth-store';
 import {storeToRefs} from "pinia";
 
 const {isAuth} = storeToRefs(useAuthStore());
+const {logout} = useAuthStore();
 const {headerInfo} = storeToRefs(useMainInfoStore())
 
 </script>
 
 <style scoped>
+button {
+  transition: all .3s;
+}
+
+button:hover {
+  color: #cacaca;
+}
 </style>

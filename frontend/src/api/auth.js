@@ -9,3 +9,18 @@ export const getAuthFromApi = async (email, password) => {
         console.error(error);
     }
 }
+
+export const logoutFromApi = async (token) => {
+    try {
+        const {data} = await api.get('logout', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+
+        localStorage.removeItem('token')
+
+    } catch (error) {
+        console.error(error);
+    }
+}
