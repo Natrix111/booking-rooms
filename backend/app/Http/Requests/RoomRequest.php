@@ -23,7 +23,8 @@ class RoomRequest extends FormRequest
             'amenities.*' => 'nullable|integer|exists:amenities,id',
             'price' => $this->isMethod('post') ? 'required|string' : 'nullable|numeric',
             'photos' => 'nullable|array|max:5',
-            'photos.*' => 'image|mimes:jpeg,png,jpg,gif',
+            'photos.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'featured' => 'string',
         ];
     }    public function messages(): array
     {
