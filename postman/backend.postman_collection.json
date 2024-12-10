@@ -561,7 +561,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "cFpaEHNK1z6Ub57SWyRcHxmiktfqcb0EBGgxpbWj15251048",
+									"value": "MUnFIuzLsJ2d9o8eGgAclsNFlonBLyoUl3tu8LIye0e016f4",
 									"type": "string"
 								}
 							]
@@ -569,18 +569,50 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/bookings/5/approve",
+							"raw": "{{host}}/bookings/3/approve",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"bookings",
-								"5",
+								"3",
 								"approve"
 							]
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -618,7 +650,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "iwKLOaaDPwBYtShYmJgrUBAsY2f7UQ4Jh06vepDbd10d4690",
+							"value": "MUnFIuzLsJ2d9o8eGgAclsNFlonBLyoUl3tu8LIye0e016f4",
 							"type": "string"
 						}
 					]
@@ -817,6 +849,35 @@
 					],
 					"path": [
 						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удаление неодобренной брони",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "MUnFIuzLsJ2d9o8eGgAclsNFlonBLyoUl3tu8LIye0e016f4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/user/bookings/4",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"bookings",
+						"4"
 					]
 				}
 			},

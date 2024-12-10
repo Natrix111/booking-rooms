@@ -8,21 +8,24 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/images/{filename}', [ImageController::class, 'show']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', [UserController::class, 'index']);
+    Route::delete('/user/bookings/{id}', [BookingController::class, 'userdelete']);
 });
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
 
 Route::get('rooms', [RoomController::class, 'index']);
 Route::get('rooms/filters', [RoomController::class, 'filters']);

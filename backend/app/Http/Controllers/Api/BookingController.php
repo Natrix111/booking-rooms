@@ -52,6 +52,8 @@ class BookingController extends Controller
 
         return response()->json(['message' => 'Заявка удалена!'], 200);
     }
+
+    
     public function store(BookingRequest $request)
     {
         $existingBookings = Booking::where('room_id', $request->room_id)
@@ -76,5 +78,22 @@ class BookingController extends Controller
 
 
         return response()->json(['message' => 'Бронь успешно создана!', 'booking' => $booking], 201);
+    }
+
+
+    public function userdelete($id)
+    {
+        try{
+            $booking = Booking::findOrFail($id);
+        } catch (\Exception $e) {
+            return response()->json(['errors'=> "Элемента по данному id не существует"],404);
+        }
+        
+        if (!$booking->approved && $booking->user_id==Auth::id()) {
+            $booking->delete();
+            return response()->json(['message' => 'Бронирование удалено!'], 200);
+        }
+
+        return response()->json(['message' => 'Нельзя удалить одобренное или чужое бронирование!'], 403);
     }
 }
