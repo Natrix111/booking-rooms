@@ -12,9 +12,11 @@
           <a href="#">Контакты</a>
         </nav>
         <div class="flex space-x-4 ">
-          <router-link to="/login">Вход</router-link>
-          <router-link to="/register">Регистрация</router-link>
-          <router-link to="/rooms/create">Создать комнату</router-link>
+          <router-link v-if="!isAuth" to="/login">Вход</router-link>
+          <router-link v-if="!isAuth" to="/register">Регистрация</router-link>
+          <router-link v-if="isAuth" to="/profile">Профиль</router-link>
+          <router-link v-if="isAuth" to="/logout">Выход из аккаунта</router-link>
+          <router-link v-if="isAuth" to="/rooms/create">Создать комнату</router-link>
         </div>
         <div class="flex space-x-4">
           <p class="underline">{{ headerInfo.city }}</p>
@@ -26,8 +28,10 @@
 
 <script setup>
 import {useMainInfoStore} from "@/stores/main-info-store.js";
+import {useAuthStore} from '@/stores/auth-store';
 import {storeToRefs} from "pinia";
 
+const {isAuth} = storeToRefs(useAuthStore());
 const {headerInfo} = storeToRefs(useMainInfoStore())
 
 </script>
