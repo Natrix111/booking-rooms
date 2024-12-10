@@ -1,6 +1,9 @@
 <template>
   <main>
-    <section>
+    <section v-if="isAuth">
+      <h2 class="text-center">Вы уже авторизованы</h2>
+    </section>
+    <section v-if="!isAuth">
       <h2 class="text-center">Регистрация</h2>
       <Form
           @submit="submitForm"
@@ -87,6 +90,11 @@
 import { ref } from "vue"
 import { Form, Field, ErrorMessage } from "vee-validate"
 import { object, string } from "yup"
+import {useAuthStore} from '@/stores/auth-store';
+import {storeToRefs} from "pinia";
+
+const {isAuth} = storeToRefs(useAuthStore());
+const {register} = useAuthStore();
 
 const avatar = ref(null)
 const avatarPreview = ref(null)
@@ -97,7 +105,7 @@ const registrationSchema = object({
       .matches(/^[А-Яа-яЁё\s.-]+$/, "Имя должно содержать только кириллицу, пробелы, точки или тире")
       .required("Имя обязательно"),
   phone: string()
-      // .matches(/^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/, "Номер телефона должен быть в формате +7(XXX)XXX-XX-XX")
+      .matches(/^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/, "Номер телефона должен быть в формате +7(XXX)XXX-XX-XX")
       .required("Телефон обязателен"),
   email: string()
       .email("Введите корректный e-mail")
@@ -123,17 +131,20 @@ const handleAvatarUpload = (event) => {
 }
 
 const submitForm = (values) => {
-  if (!avatarError.value) {
+  try {
+    if(avatarError.value) return
+
     const formData = new FormData()
-    formData.append("avatar", avatar.value)
+    avatar.value ? formData.append("avatar", avatar.value) : null
     formData.append("name", values.name)
     formData.append("phone", values.phone)
     formData.append("email", values.email)
     formData.append("password", values.password)
 
-    console.log("Отправленные данные:", Object.fromEntries(formData.entries()))
-  } else {
-    console.log("Ошибка при отправке данных")
+    register(formData)
+
+  } catch (error) {
+    console.error(error)
   }
 }
 </script>

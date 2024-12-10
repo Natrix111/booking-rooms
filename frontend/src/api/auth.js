@@ -24,3 +24,18 @@ export const logoutFromApi = async (token) => {
         console.error(error);
     }
 }
+
+export const registerFromApi = async (userData) => {
+    try {
+        const {data} = await api.post('register', userData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+
+        return data
+
+    } catch (error) {
+        console.error(error);
+    }
+}
