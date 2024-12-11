@@ -40,7 +40,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
         try {
             const data = await registerFromApi(userData)
 
-            token.value = data?.user_token
+            token.value = data.user_token
             localStorage.setItem('token', token.value)
 
             user.value = data.user
@@ -50,7 +50,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
 
 
         } catch (error) {
-            console.error(error);
+            console.error(error.response.data);
         }
     }
 

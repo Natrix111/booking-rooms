@@ -37,5 +37,6 @@ export const registerFromApi = async (userData) => {
 
     } catch (error) {
         console.error(error);
+        throw error
     }
 }

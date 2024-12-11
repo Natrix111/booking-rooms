@@ -19,10 +19,10 @@
               class="input"
           />
           <p class="text-sm text-gray-500 mt-1">Файл формата jpeg, png, размером не более 2 МБ</p>
-          <p v-if="avatarError" class="error">{{ avatarError }}</p>
-          <div v-if="avatarPreview" class="mt-4">
+          <p v-if="avatar.error" class="error">{{ avatar.error }}</p>
+          <div v-if="avatar.preview" class="mt-4">
             <img
-                :src="avatarPreview"
+                :src="avatar.preview"
                 alt="Avatar Preview"
                 class="w-20 h-20 object-cover rounded" />
           </div>
@@ -46,7 +46,8 @@
               id="phone"
               name="phone"
               type="text"
-              v-mask="'+7(###)###-##-##'"
+              v-imask="{mask: '+{7}(000)000-00-00'}"
+              value="+7"
               placeholder="+7(XXX)XXX-XX-XX"
               class="input"
           />
@@ -77,9 +78,10 @@
           <ErrorMessage name="password" class="error" />
         </div>
 
-        <div class="flex space-x-4">
+        <div class="flex space-x-4 items-center">
           <button type="submit" class="button button-blue">Зарегистрироваться</button>
           <button type="reset" class="button button-grey">Сбросить</button>
+          <div v-if="isLoading" class="spinner ml-4"></div>
         </div>
       </Form>
     </section>
@@ -96,9 +98,13 @@ import {storeToRefs} from "pinia";
 const {isAuth} = storeToRefs(useAuthStore());
 const {register} = useAuthStore();
 
-const avatar = ref(null)
-const avatarPreview = ref(null)
-const avatarError = ref("")
+const isLoading = ref(false);
+
+const avatar = ref({
+  avatar: null,
+  preview: null,
+  error: '',
+})
 
 const registrationSchema = object({
   name: string()
@@ -120,31 +126,35 @@ const handleAvatarUpload = (event) => {
   const file = event.target.files[0]
 
   if (file && file.size <= 2 * 1024 * 1024 && ["image/jpeg", "image/png"].includes(file.type)) {
-    avatar.value = file
-    avatarPreview.value = URL.createObjectURL(file)
-    avatarError.value = ""
+    avatar.value.avatar = file
+    avatar.value.preview = URL.createObjectURL(file)
+    avatar.value.error = ""
   } else {
-    avatar.value = null
-    avatarPreview.value = null
-    avatarError.value = "Файл должен быть формата jpeg, png и размером не более 2 МБ."
+    avatar.value.avatar = null
+    avatar.value.preview = null
+    avatar.value.error = "Файл должен быть формата jpeg, png и размером не более 2 МБ."
   }
 }
 
-const submitForm = (values) => {
+const submitForm = async (values) => {
   try {
-    if(avatarError.value) return
+    if(avatar.value.error) return
+
+    isLoading.value = true
 
     const formData = new FormData()
-    avatar.value ? formData.append("avatar", avatar.value) : null
+    avatar.value.avatar ? formData.append("avatar", avatar.value.avatar) : null
     formData.append("name", values.name)
     formData.append("phone", values.phone)
     formData.append("email", values.email)
     formData.append("password", values.password)
 
-    register(formData)
+    await register(formData)
 
   } catch (error) {
     console.error(error)
+  } finally {
+    isLoading.value = false
   }
 }
 </script>
@@ -160,5 +170,9 @@ label {
 
 .error {
   @apply text-red-500 text-sm mt-1
+}
+
+.spinner {
+  @apply border-4 border-t-blue-500 border-gray-300 rounded-full w-6 h-6 animate-spin;
 }
 </style>
