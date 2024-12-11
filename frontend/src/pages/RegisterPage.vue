@@ -78,6 +78,10 @@
           <ErrorMessage name="password" class="error" />
         </div>
 
+        <div v-if="Object.keys(errorsFromApi).length > 0">
+          <p v-for="error in errorsFromApi" class="error">{{ error[0] }}</p>
+        </div>
+
         <div class="flex space-x-4 items-center">
           <button type="submit" class="button button-blue">Зарегистрироваться</button>
           <button type="reset" class="button button-grey">Сбросить</button>
@@ -99,6 +103,7 @@ const {isAuth} = storeToRefs(useAuthStore());
 const {register} = useAuthStore();
 
 const isLoading = ref(false);
+const errorsFromApi = ref([])
 
 const avatar = ref({
   avatar: null,
@@ -153,6 +158,8 @@ const submitForm = async (values) => {
 
   } catch (error) {
     console.error(error)
+    errorsFromApi.value = error.response.data
+    console.log(errorsFromApi.value)
   } finally {
     isLoading.value = false
   }
