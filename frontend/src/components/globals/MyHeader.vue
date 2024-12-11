@@ -2,14 +2,16 @@
   <header class="bg-blue-500 text-white py-4 px-10">
     <div class="mx-auto flex justify-between items-center">
       <div class="flex-grow">
-        <h1 class="text-xl font-bold">{{ headerInfo.title }}</h1>
-        <p>{{ headerInfo.slogan }}</p>
+        <router-link to="/">
+          <h1 class="text-xl font-bold">{{ headerInfo.title }}</h1>
+          <p>{{ headerInfo.slogan }}</p>
+        </router-link>
       </div>
       <div class="flex space-x-20 flex-grow">
         <nav class="flex space-x-4 flex-grow">
           <router-link to="/">Главная</router-link>
           <router-link to="/rooms">Каталог</router-link>
-          <a href="#">Контакты</a>
+          <a href="#contacts">Контакты</a>
         </nav>
         <div>
           <div v-if="!isAuth" class="flex space-x-4">

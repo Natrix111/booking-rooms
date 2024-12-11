@@ -2,10 +2,13 @@ import {defineStore} from 'pinia'
 import {computed, ref} from 'vue'
 import {getAuthFromApi, logoutFromApi} from "@/api/auth.js";
 import {useRouter} from "vue-router";
+import {registerFromApi} from "@/api/auth.js";
 
 export const useAuthStore = defineStore('AuthStore', () => {
     const token = ref(localStorage.getItem('token') || null);
     const isAuth = computed(() => !!token.value);
+    const user = ref(localStorage.getItem('user') || null)
+
     const router = useRouter()
 
     const getAuth = async (email, password) => {
@@ -33,6 +36,25 @@ export const useAuthStore = defineStore('AuthStore', () => {
         }
     }
 
-    return {token, isAuth, getAuth, logout}
+    const register = async (userData) => {
+        try {
+            const data = await registerFromApi(userData)
+
+            token.value = data.user_token
+            localStorage.setItem('token', token.value)
+
+            user.value = data.user
+            localStorage.setItem('user', user.value)
+
+            router.push('/profile')
+
+
+        } catch (error) {
+            throw error
+            // console.error(error.response.data);
+        }
+    }
+
+    return {token, user, isAuth, getAuth, logout, register}
 })
 

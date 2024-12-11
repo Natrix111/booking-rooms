@@ -57,19 +57,8 @@
             </div>
           </div>
           <div class="buttons-list">
-            <button
-                type="submit"
-                class="button button-blue"
-            >
-              Применить
-            </button>
-            <button
-                type="reset"
-                @click="resetFilters"
-                class="button button-grey"
-            >
-              Сбросить фильтр
-            </button>
+            <my-button class="button-blue">Применить</my-button>
+            <my-button @click="resetFilters" class="button-grey">Сбросить фильтр</my-button>
           </div>
         </form>
       </aside>
@@ -97,6 +86,7 @@ import {ref, onMounted} from "vue";
 import CatalogRoomsList from "@/components/catalogRooms/CatalogRoomsList.vue";
 import {storeToRefs} from "pinia";
 import {useCatalogRoomsStore} from "@/stores/catalog-rooms-store.js";
+import MyButton from "@/components/UI/MyButton.vue";
 
 const {rooms, filters: filtersList} = storeToRefs(useCatalogRoomsStore())
 const {getFilters, getSortedAndFilteredRooms} = useCatalogRoomsStore()

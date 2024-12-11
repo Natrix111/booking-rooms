@@ -1,7 +1,8 @@
 <template>
   <h2
       v-if="isLoading"
-      class="text-center">Загрузка....</h2>
+      class="text-center">Загрузка</h2>
+  <LoadSpinner v-if="isLoading" class="m-auto h-10 w-10"/>
   <main v-else>
     <div>
       <section class="room">
@@ -66,6 +67,7 @@ import CatalogRoomsList from "@/components/catalogRooms/CatalogRoomsList.vue";
 import { useRoute } from "vue-router";
 import defaultPreview from "@/assets/image/catalogRooms/default-preview.jpg"
 import {storageUrl} from "@/api/api.js";
+import LoadSpinner from "../components/UI/LoadSpinner.vue";
 
 const { getRoomById } = useCatalogRoomsStore();
 

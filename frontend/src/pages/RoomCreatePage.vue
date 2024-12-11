@@ -1,9 +1,6 @@
 <template>
   <main>
-    <section v-if="isLoading">
-      <h2 class="text-center">Создание номера...</h2>
-    </section>
-    <section v-else-if="isCreate">
+    <section v-if="isCreate">
       <h2 class="text-center">Номер успешно создан!</h2>
       <div class="button-list">
         <button @click="goToCreatedRoom" class="button button-blue">Просмотреть</button>
@@ -110,11 +107,10 @@
           </label>
         </div>
 
-        <div class='flex space-x-4'>
-          <button type='submit' class='button button-blue'>Сохранить</button>
-          <button type='button' @click='resetForm' class='button button-grey'>
-            Сбросить
-          </button>
+        <div class='flex space-x-4 items-center'>
+          <my-button class="button-blue">Сохранить</my-button>
+          <my-button @click='resetForm' class="button-grey">Сбросить</my-button>
+          <LoadSpinner v-if="isLoading"/>
         </div>
       </form>
     </section>
@@ -127,11 +123,11 @@ import {storeToRefs} from 'pinia'
 import {useCatalogRoomsStore} from '@/stores/catalog-rooms-store.js'
 import {api} from "@/api/api.js";
 import { useRouter } from 'vue-router'
+import MyButton from "@/components/UI/MyButton.vue";
+import LoadSpinner from "@/components/UI/LoadSpinner.vue";
 
 const {filters: filtersList} = storeToRefs(useCatalogRoomsStore())
 const {getRooms, getFilters} = useCatalogRoomsStore()
-
-const token = '4|ci5Zo7JpzPwOXOedowo4bvchzoX7DhwS6r6okqNf0ef4bd3e'
 
 const form = ref({
   name: '',
@@ -219,7 +215,7 @@ const submitRoomForm = async () => {
   try {
     const {data} = await api.post('rooms', formData, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'multipart/form-data'
       }
     })
@@ -228,12 +224,13 @@ const submitRoomForm = async () => {
 
     idCreatedRoom.value = data.id
 
-    isLoading.value = false
     isCreate.value = true
     resetForm()
 
   } catch (error) {
     console.error(error)
+    isLoading.value = false
+  } finally {
     isLoading.value = false
   }
 }
