@@ -17,16 +17,22 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "iwKLOaaDPwBYtShYmJgrUBAsY2f7UQ4Jh06vepDbd10d4690",
+									"value": "M4GID7zeCfC9Xa4tNdOGxSljaSIxtZx284MsKBZM51c63eac",
 									"type": "string"
 								}
 							]
 						},
-						"method": "PUT",
-						"header": [],
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "_method",
+								"value": "patch",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"address\": \"Новый адрес2\",\n    \"working_hours\": \"Пн-Вс: 9:00 - 20:00\"\n}",
+							"raw": "{\n    \"email\": \"qwewqd\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -53,12 +59,12 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "iwKLOaaDPwBYtShYmJgrUBAsY2f7UQ4Jh06vepDbd10d4690",
+									"value": "M4GID7zeCfC9Xa4tNdOGxSljaSIxtZx284MsKBZM51c63eac",
 									"type": "string"
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -89,7 +95,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "bkaHLvtRGoNJnrjqeqoiPfWOFpsSskCwzB6LeQcL8d6c68f3",
+									"value": "M4GID7zeCfC9Xa4tNdOGxSljaSIxtZx284MsKBZM51c63eac",
 									"type": "string"
 								}
 							]
@@ -245,7 +251,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "bkaHLvtRGoNJnrjqeqoiPfWOFpsSskCwzB6LeQcL8d6c68f3",
+									"value": "M4GID7zeCfC9Xa4tNdOGxSljaSIxtZx284MsKBZM51c63eac",
 									"type": "string"
 								}
 							]
@@ -262,7 +268,7 @@
 								},
 								{
 									"key": "amenities[0]",
-									"value": "TV",
+									"value": "7",
 									"type": "text"
 								},
 								{
@@ -273,7 +279,7 @@
 								{
 									"key": "photos[0]",
 									"type": "file",
-									"src": "/home/yoru/Desktop/images/ebf7fc25cf73d2e65f1391735034dc6d.jpg"
+									"src": "/home/yoru/Desktop/images/238862_childrens-room_1-min.jpg"
 								},
 								{
 									"key": "featured",
@@ -282,7 +288,7 @@
 								},
 								{
 									"key": "amenities[1]",
-									"value": "WiFi",
+									"value": "955",
 									"type": "text"
 								},
 								{
@@ -303,7 +309,7 @@
 								{
 									"key": "photos[1]",
 									"type": "file",
-									"src": "/home/yoru/Desktop/images/238862_childrens-room_1-min.jpg"
+									"src": "/home/yoru/Desktop/images/gostevaya.jpg"
 								}
 							]
 						},
@@ -327,7 +333,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "bkaHLvtRGoNJnrjqeqoiPfWOFpsSskCwzB6LeQcL8d6c68f3",
+									"value": "M4GID7zeCfC9Xa4tNdOGxSljaSIxtZx284MsKBZM51c63eac",
 									"type": "string"
 								}
 							]
@@ -350,7 +356,7 @@
 								},
 								{
 									"key": "amenities[0]",
-									"value": "TV",
+									"value": "8",
 									"type": "text"
 								},
 								{
@@ -365,13 +371,14 @@
 								},
 								{
 									"key": "featured",
-									"value": "1",
+									"value": "0",
 									"type": "text"
 								},
 								{
 									"key": "amenities[1]",
-									"value": "WiFi",
-									"type": "text"
+									"value": "5",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "width",
@@ -397,13 +404,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{host}}/rooms/9?_method=patch",
+							"raw": "{{host}}/rooms/1?_method=patch",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"rooms",
-								"9"
+								"1"
 							],
 							"query": [
 								{
@@ -605,6 +612,9 @@
 		{
 			"name": "список номеров",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [],
 				"url": {

@@ -18,9 +18,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('avatar')->nullable();
-            $table->string('role')->default('client'); // доступ к функционалу админа будем ограничивать
-            $table->rememberToken();                                // групповыми политиками в зависимости от роли users
-            $table->timestamps();
+            $table->string('role')->default('client');
+            $table->rememberToken();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

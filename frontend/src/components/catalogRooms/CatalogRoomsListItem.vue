@@ -1,5 +1,7 @@
 <template>
-  <article class="item">
+  <article
+      @click="$router.push(`/rooms/${room.id}`)"
+      class="item">
     <img :src="props.room.photos ? props.room.photos[0] : defaultPreview"
          alt="Фото номера"
          class="item-image" />
@@ -27,7 +29,7 @@ const props = defineProps({
 
 <style scoped>
 .item {
-  @apply bg-white p-4 rounded hover:shadow-lg duration-300;
+  @apply bg-white p-4 rounded hover:shadow-lg duration-300 cursor-pointer;
 }
 
 .item-image {
