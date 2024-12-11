@@ -83,9 +83,9 @@
         </div>
 
         <div class="flex space-x-4 items-center">
-          <button type="submit" class="button button-blue">Зарегистрироваться</button>
-          <button type="reset" class="button button-grey">Сбросить</button>
-          <div v-if="isLoading" class="spinner ml-4"></div>
+          <my-button class="button-blue">Зарегистрироваться</my-button>
+          <my-button type="reset" class="button-grey">Сбросить</my-button>
+          <LoadSpinner v-if="isLoading"/>
         </div>
       </Form>
     </section>
@@ -98,6 +98,8 @@ import { Form, Field, ErrorMessage } from "vee-validate"
 import { object, string } from "yup"
 import {useAuthStore} from '@/stores/auth-store';
 import {storeToRefs} from "pinia";
+import LoadSpinner from "@/components/UI/LoadSpinner.vue";
+import MyButton from "@/components/UI/MyButton.vue";
 
 const {isAuth} = storeToRefs(useAuthStore());
 const {register} = useAuthStore();
@@ -177,9 +179,5 @@ label {
 
 .error {
   @apply text-red-500 text-sm mt-1
-}
-
-.spinner {
-  @apply border-4 border-t-blue-500 border-gray-300 rounded-full w-6 h-6 animate-spin;
 }
 </style>

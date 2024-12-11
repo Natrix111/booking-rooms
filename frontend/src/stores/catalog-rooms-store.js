@@ -11,7 +11,6 @@ export const useCatalogRoomsStore = defineStore('CatalogRoomsStore', () => {
     const getRooms = async () => {
         try {
             rooms.value = await getRoomsFromApi()
-            rooms.value.forEach((room) => {room.area = room.dimensions[0] * room.dimensions[1]})
 
         } catch (error) {
             console.error(error);
