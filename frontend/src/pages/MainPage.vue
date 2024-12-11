@@ -19,7 +19,7 @@
         </ul>
       </section>
 
-      <section class="mt-12">
+      <section id="contacts" class="mt-12">
         <h2>Контакты</h2>
         <div class="contacts-wrapper">
           <div class="contacts-details">
