@@ -11,7 +11,7 @@ class BookingRequest extends FormRequest
     {
         return [
             'pets' => 'required|array|min:1|max:4',
-            'pets.*' => 'required|string|regex:/^[а-яА-ЯёЁa-zA-Z0-9\s\-]+$/',
+            'pets.*' => 'required|string|regex:/^[\p{Cyrillic}\s\-a-zA-Z0-9]+$/u',
             'check_in' => 'required|date_format:Y-m-d|after_or_equal:today',
             'check_out' => 'required|date_format:Y-m-d|after:check_in',
             'room_id' => 'required|exists:rooms,id',
