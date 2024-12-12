@@ -1,17 +1,18 @@
 <template>
-  <h2
-      v-if="isLoading"
-      class="text-center">Загрузка</h2>
-  <LoadSpinner v-if="isLoading" class="m-auto h-10 w-10"/>
+  <main  v-if="isLoading">
+    <h2 class="text-center">Загрузка</h2>
+    <LoadSpinner class="m-auto h-10 w-10" />
+  </main>
   <main v-else>
     <div>
       <section class="room">
         <div class="w-full md:w-1/2">
           <div class="slider">
             <img
-                :src="currentImage ?`${storageUrl}${currentImage}` : defaultPreview"
+                :src="currentImage ? `${storageUrl}${currentImage}` : defaultPreview"
                 class="current-image"
-                alt="Main Image">
+                alt="Main Image"
+            />
             <div class="slider-items">
               <img
                   v-for="(image, index) in room.room.photos"
@@ -29,53 +30,160 @@
           <h2 class="mb-2">{{ room.room.name }}</h2>
           <p><strong>Цена:</strong> {{ room.room.price }} руб/сутки</p>
           <p><strong>Площадь:</strong> {{ room.room.area }} м²</p>
-          <p title="Ширина х Длина х Высота"><strong>Размеры:</strong> {{ room.room.dimensions[0] }}х{{room.room.dimensions[1]}}х{{room.room.dimensions[2]}}</p>
+          <p title="Ширина х Длина х Высота">
+            <strong>Размеры:</strong>
+            {{ room.room.dimensions[0] }}х{{ room.room.dimensions[1] }}х{{ room.room.dimensions[2] }}
+          </p>
           <p class="pb-2">
-            <strong>Оснащение: </strong>
+            <strong>Оснащение:</strong>
             <ul class="amenities-list">
               <li
                   v-for="amenity in room.room.amenities"
                   :key="amenity.name"
-                  class="amenities-item">
+                  class="amenities-item"
+              >
                 <img
                     :title="amenity.name"
                     :src="`${storageUrl}${amenity.img}`"
-                    class="icon">
+                    class="icon"
+                />
                 <span>&nbsp;- {{ amenity.name }}</span>
               </li>
             </ul>
-
-
           </p>
-          <button class="button button-blue w-1/2 mt-8">Забронировать</button>
+          <button @click="openBookingModal" class="button button-blue w-1/2">
+            Забронировать
+          </button>
         </div>
       </section>
 
       <section>
         <h2 class="mb-4">Другие номера</h2>
-        <CatalogRoomsList :rooms="room.otherRooms"/>
+        <CatalogRoomsList :rooms="room.otherRooms" />
       </section>
-    </div>
 
+      <div
+          v-if="isBookingModalOpen"
+          class="booking-modal"
+      >
+        <div class="bg-white p-6 rounded shadow-lg w-1/2">
+          <h3 class="text-center mb-4">Бронирование номера</h3>
+          <Form @submit="submitBookingForm" :validation-schema="bookingSchema" class="space-y-4">
+            <div v-for="(pet, index) in pets" :key="index" class="space-y-4">
+              <label>Имя питомца</label>
+              <Field
+                  v-model="pet.name"
+                  name="petName"
+                  placeholder="Имя питомца"
+                  class="input"
+              />
+              <ErrorMessage name="petName" class="error" />
+            </div>
+            <my-button @click="addPet" v-if="pets.length < 4" class="button-grey">
+              Добавить питомца
+            </my-button>
+            <div class="space-y-4">
+              <label for="startDate">Дата заезда</label>
+              <Field
+                  name="startDate"
+                  type="date"
+                  v-model="booking.startDate"
+                  class="input"
+              />
+              <ErrorMessage name="startDate" class="error" />
+            </div>
+            <div class="space-y-4">
+              <label for="endDate">Дата выезда</label>
+              <Field
+                  name="endDate"
+                  type="date"
+                  v-model="booking.endDate"
+                  class="input"
+              />
+              <ErrorMessage name="endDate" class="error" />
+            </div>
+            <div class="flex space-x-4">
+              <my-button class="button-blue">Отправить заявку</my-button>
+              <my-button @click="closeBookingModal" class="button-grey">
+                Отмена
+              </my-button>
+            </div>
+          </Form>
+        </div>
+      </div>
+    </div>
   </main>
 </template>
 
 <script setup>
+import { Form, Field, ErrorMessage } from "vee-validate"
+import { object, string, mixed } from "yup"
 import { useCatalogRoomsStore } from "@/stores/catalog-rooms-store.js";
 import { onMounted, ref, watch } from "vue";
 import CatalogRoomsList from "@/components/catalogRooms/CatalogRoomsList.vue";
 import { useRoute } from "vue-router";
 import defaultPreview from "@/assets/image/catalogRooms/default-preview.jpg"
 import {storageUrl} from "@/api/api.js";
-import LoadSpinner from "../components/UI/LoadSpinner.vue";
+import LoadSpinner from "@/components/UI/LoadSpinner.vue";
+import MyButton from "@/components/UI/MyButton.vue";
 
 const { getRoomById } = useCatalogRoomsStore();
 
 const room = ref({});
-const isLoading = ref(true)
 const currentImage = ref('')
+const isLoading = ref(true)
+const isBookingModalOpen = ref(false)
+const booking = ref({ startDate: "", endDate: "" })
+const pets = ref([{ name: "" }])
 
-const route = useRoute();
+const route = useRoute()
+
+const bookingSchema = object({
+  petName: string()
+      .matches(/^[A-Za-zА-Яа-яёЁ\s-]+$/, "Допустимы буквы, пробелы и тире")
+      .required("Имя питомца обязательно"),
+  startDate: mixed()
+      .test("is-valid-date", "Дата заезда обязательна", (value) => {
+        if (!value) return false
+        const date = new Date(value)
+        return !isNaN(date.getTime())
+      })
+      .test("is-after-today", "Дата заезда должна быть не раньше текущей", (value) => {
+        if (!value) return false
+        const date = new Date(value)
+        return date >= new Date()
+      }),
+  endDate: mixed()
+      .test("is-valid-date", "Дата выезда обязательна", (value) => {
+        if (!value) return false
+        const date = new Date(value)
+        return !isNaN(date.getTime())
+      })
+      .test("is-after-start", "Дата выезда должна быть позже даты заезда", function (value) {
+        const { startDate } = this.parent
+        if (!value || !startDate) return false
+        const start = new Date(startDate)
+        const end = new Date(value)
+        return end > start
+      }),
+})
+
+const openBookingModal = () => {
+  isBookingModalOpen.value = true
+}
+
+const closeBookingModal = () => {
+  isBookingModalOpen.value = false
+}
+
+const submitBookingForm = () => {
+  console.log("Booking form submitted", pets.value, booking.value)
+  closeBookingModal()
+}
+
+const addPet = () => {
+  if (pets.value.length < 4) pets.value.push({ name: "" })
+}
 
 const loadRoomData = async () => {
   room.value = await getRoomById(route.params.id)
@@ -139,5 +247,13 @@ watch(() => route.params.id,
 
 .icon {
   @apply h-7 w-7;
+}
+
+.booking-modal {
+  @apply fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center;
+}
+
+.error {
+  @apply text-red-500 text-sm mt-1
 }
 </style>
