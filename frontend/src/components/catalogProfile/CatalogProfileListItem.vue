@@ -1,30 +1,30 @@
 <script setup>
+import {useBookingStore} from "@/stores/booking-store.js";
 
+defineProps({
+  id: {
+    type: Number,
+    default: null
+  },
+  title: {
+    type: String,
+    default: ''
+  },
+  price: {
+    type: Number,
+    default: 0
+  }
+})
+
+const { deleteBook } = useBookingStore()
 </script>
 
 <template>
-
   <article class="item">
-    <h3></h3>
-    <p>Цена:</p>
-    <p>Площадь:   м^2</p>
-    <div>Оснащение:</div>
+    <h3>{{ title }}</h3>
+    <p>Цена: {{ price }} </p>
+    <button @click="deleteBook(id)">Удалить</button>
   </article>
-
-  <article class="item">
-  <h3></h3>
-  <p>Цена:</p>
-  <p>Площадь:   м^2</p>
-  <div>Оснащение:</div>
-  </article>
-
-  <article class="item">
-  <h3></h3>
-  <p>Цена:</p>
-  <p>Площадь:   м^2</p>
-  <div>Оснащение:</div>
-  </article>
-
 </template>
 
 <style scoped>
