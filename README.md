@@ -20,6 +20,7 @@
 ```bash
       docker-compose up -d --build
       docker-compose exec app composer install 
+      docker-compose exec app chown -R www-data:www-data storage/ public/ 
       docker-compose exec app php artisan storage:link
 ```
 
