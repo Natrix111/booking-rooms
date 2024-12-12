@@ -20,6 +20,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/login', function () {
+    return response()->json(['Ошибка' => 'Недействительный токен'], 401); 
+})->name('login');
 
 
 Route::get('rooms', [RoomController::class, 'index']);
