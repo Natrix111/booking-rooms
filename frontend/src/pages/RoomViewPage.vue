@@ -102,11 +102,12 @@
               />
               <ErrorMessage name="endDate" class="error" />
             </div>
-            <div class="flex space-x-4">
+            <div class="flex space-x-4 items-center">
               <my-button class="button-blue">Отправить заявку</my-button>
               <my-button @click="closeBookingModal" class="button-grey">
                 Отмена
               </my-button>
+              <LoadSpinner v-if="isLoadingBookingRooms" />
             </div>
           </Form>
         </div>
@@ -126,12 +127,14 @@ import defaultPreview from "@/assets/image/catalogRooms/default-preview.jpg"
 import {storageUrl} from "@/api/api.js";
 import LoadSpinner from "@/components/UI/LoadSpinner.vue";
 import MyButton from "@/components/UI/MyButton.vue";
+import {bookingRooms} from "@/api/rooms.js";
 
 const { getRoomById } = useCatalogRoomsStore();
 
 const room = ref({});
 const currentImage = ref('')
 const isLoading = ref(true)
+const isLoadingBookingRooms = ref(false)
 const isBookingModalOpen = ref(false)
 const booking = ref({ startDate: "", endDate: "" })
 const pets = ref([{ name: "" }])
@@ -176,9 +179,27 @@ const closeBookingModal = () => {
   isBookingModalOpen.value = false
 }
 
-const submitBookingForm = () => {
-  console.log("Booking form submitted", pets.value, booking.value)
-  closeBookingModal()
+const submitBookingForm = async () => {
+  try {
+    isLoadingBookingRooms.value = true
+
+    const formData = {
+      pets: pets.value.map(el => el.name),
+      check_in: booking.value.startDate,
+      check_out: booking.value.endDate,
+      room_id: route.params.id,
+    }
+
+    console.log("Booking form submitted", formData)
+    await bookingRooms(formData)
+
+    closeBookingModal()
+
+  } catch (error) {
+    console.error(error.response.data)
+  } finally {
+    isBookingModalOpen.value = false
+  }
 }
 
 const addPet = () => {

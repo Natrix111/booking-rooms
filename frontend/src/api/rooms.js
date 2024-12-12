@@ -37,3 +37,19 @@ export const getRoomByIdFromApi = async (roomId) => {
         console.error(error);
     }
 }
+
+export const bookingRooms = async (bookingData) => {
+    try {
+        const {data} = await api.post('bookings', bookingData, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+
+        return data
+
+    } catch (error) {
+        throw error
+    }
+}
