@@ -2,7 +2,7 @@
   <article
       @click="$router.push(`/rooms/${room.id}`)"
       class="item">
-    <img :src="props.room.photos ? props.room.photos[0] : defaultPreview"
+    <img :src="room.photos ? room.photos[0] : defaultPreview"
          alt="Фото номера"
          class="item-image" />
     <h3>{{ room.name }}</h3>
