@@ -1,5 +1,9 @@
 <script setup>
+import {useAuthStore} from '@/stores/auth-store';
+import {storeToRefs} from "pinia";
+import {storageUrl} from "@/api/api.js";
 
+const {user} = storeToRefs(useAuthStore());
 import ProfileForm from "@/components/form/ProfileForm.vue";
 import CatalogProfileListItem from "@/components/catalogProfile/CatalogProfileListItem.vue";
 </script>

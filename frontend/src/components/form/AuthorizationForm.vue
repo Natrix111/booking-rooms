@@ -2,6 +2,7 @@
 import {reactive} from "vue";
 import {useAuthStore} from '@/stores/auth-store'
 import {useRouter} from "vue-router";
+import MyButton from "@/components/UI/MyButton.vue";
 
 const router = useRouter()
 
@@ -23,7 +24,7 @@ const {getAuth} = useAuthStore()
         })">
     <input type="email" v-model="loginData.email" class="text-xl p-5 size-6/12 border rounded px-3 py-2">
     <input type="password" v-model="loginData.password" class="text-xl p-5 size-6/12 border rounded px-3 py-2">
-    <button class="form-button ">Login</button>
+    <my-button class="form-button">Войти</my-button>
   </form>
 </template>
 

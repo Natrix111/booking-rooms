@@ -6,3 +6,5 @@ export const api = axios.create({
         'Content-Type': 'Application/json'
     }
 })
+
+export const storageUrl = 'http://localhost:8080/storage/'
