@@ -71,15 +71,24 @@
           <Form @submit="submitBookingForm" :validation-schema="bookingSchema" class="space-y-4">
             <div v-for="(pet, index) in pets" :key="index" class="space-y-4">
               <label>Имя питомца</label>
-              <Field
+<!--              <Field-->
+<!--                  v-model="pet.name"-->
+<!--                  name="petName"-->
+<!--                  placeholder="Имя питомца"-->
+<!--                  class="input"-->
+<!--              />-->
+<!--              <ErrorMessage name="petName" class="error" />-->
+              <input
                   v-model="pet.name"
-                  name="petName"
+                  type="text"
                   placeholder="Имя питомца"
-                  class="input"
-              />
-              <ErrorMessage name="petName" class="error" />
+                  @input="validatePetName(pet.name, index)"
+                  class="input">
+              <span v-if="petsErrors[index]" class="error">
+                {{ petsErrors[index] }}
+              </span>
             </div>
-            <my-button @click="addPet" v-if="pets.length < 4" class="button-grey">
+            <my-button @click.prevent="addPet" v-if="pets.length < 4" class="button-grey">
               Добавить питомца
             </my-button>
             <div class="space-y-4">
@@ -137,14 +146,13 @@ const isLoading = ref(true)
 const isLoadingBookingRooms = ref(false)
 const isBookingModalOpen = ref(false)
 const booking = ref({ startDate: "", endDate: "" })
+
 const pets = ref([{ name: "" }])
+const petsErrors = ref([])
 
 const route = useRoute()
 
 const bookingSchema = object({
-  petName: string()
-      .matches(/^[A-Za-zА-Яа-яёЁ\s-]+$/, "Допустимы буквы, пробелы и тире")
-      .required("Имя питомца обязательно"),
   startDate: mixed()
       .test("is-valid-date", "Дата заезда обязательна", (value) => {
         if (!value) return false
@@ -181,6 +189,7 @@ const closeBookingModal = () => {
 
 const submitBookingForm = async () => {
   try {
+    if(petsErrors.length > 0) return
     isLoadingBookingRooms.value = true
 
     const formData = {
@@ -191,19 +200,30 @@ const submitBookingForm = async () => {
     }
 
     console.log("Booking form submitted", formData)
-    await bookingRooms(formData)
+    const data = await bookingRooms(formData)
+    console.log(data)
 
     closeBookingModal()
 
   } catch (error) {
     console.error(error.response.data)
   } finally {
-    isBookingModalOpen.value = false
+    isLoadingBookingRooms.value = false
   }
 }
 
 const addPet = () => {
   if (pets.value.length < 4) pets.value.push({ name: "" })
+}
+
+const validatePetName = (value, index) => {
+  const namePattern = /^[A-Za-zА-Яа-яёЁ\s-]+$/
+  let errorMessage = null;
+
+  if(!value) errorMessage = 'Имя питомца обязательно'
+  else if(!namePattern.test(value)) errorMessage = 'Допустимы только буквы, пробелы и тире'
+
+  petsErrors.value[index] = errorMessage
 }
 
 const loadRoomData = async () => {
