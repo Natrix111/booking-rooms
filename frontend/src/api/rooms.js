@@ -49,8 +49,7 @@ export const createRoom = async (roomData) => {
 
         return data
     } catch (error) {
-        console.error(error)
-        isLoading.value = false
+        throw error
     }
 }
 

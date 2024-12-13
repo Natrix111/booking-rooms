@@ -18,21 +18,24 @@ class UserSeeder extends Seeder
             'email' => 'ivanov@gmail.com',
             'phone' => '8-123-456-78-90',
             'password' => bcrypt('QWEasd123'),
-            'role'=> 'client'
+            'role'=> 'client',
+            'avatar' => 'avatars/avatar-1.png',
         ],
         [
             'name' => 'Екатерина Петрова',
             'email' => 'petrova@example.com',
             'phone' => '8-999-654-32-10',
             'password' => bcrypt('ASDqwe321'),
-            'role'=> 'client'
+            'role'=> 'client',
+            'avatar' => 'avatars/avatar-2.png',
         ],
         [
             'name' => 'Администратор Первый',
             'email' => 'Admin@admin.com',
             'phone' => '8-999-999-99-99',
             'password' => bcrypt('superAdmin'),
-            'role'=> 'admin'
+            'role'=> 'admin',
+            'avatar' => 'avatars/avatar-3.png',
         ],
     ]);
 }

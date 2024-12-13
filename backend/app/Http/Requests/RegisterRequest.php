@@ -17,7 +17,7 @@ class RegisterRequest extends FormRequest
     public function rules(): array // правила валидации
     {
         return [
-            'name' => 'required|string|regex:/^[А-Яа-яЁёs.-]+$/u',
+            'name' => 'required|string|regex:/^[а-яА-ЯёЁ\s\-\.]+$/',
             'phone' => 'required|string|regex:/^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/|unique:users',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:8',
@@ -34,6 +34,7 @@ class RegisterRequest extends FormRequest
             'phone.regex' => 'Номер не соответствует стандартному формату',
             'email.required' => 'Заполните почту при регистрации',
             'email.unique' => 'Данная почта уже зарегистрирована',
+            'phone.unique' => 'Данный телефон уже зарегистрирован',
             'password.min' => 'Используйте минимум 8 символов для пароля',
             'password.required' => 'Заполните пароль при регистрации',
             'avatar.mimes' => 'Используйте формат для загрузки фотографии jpeg или png',
