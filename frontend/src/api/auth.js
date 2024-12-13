@@ -21,7 +21,7 @@ export const logoutFromApi = async (token) => {
         localStorage.removeItem('token')
 
     } catch (error) {
-        console.error(error);
+        throw error
     }
 }
 
