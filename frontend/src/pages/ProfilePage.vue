@@ -1,30 +1,29 @@
 <script setup>
-import ProfileForm from "@/components/form/ProfileForm.vue";
 import CatalogProfileListItem from "@/components/catalogProfile/CatalogProfileListItem.vue";
-import {useBookingStore} from "@/stores/booking-store.js";
+import {useProfileStore} from "@/stores/user-profile-store.js";
 import {storeToRefs} from "pinia";
 import {onMounted} from "vue";
 
-const {bookings} = storeToRefs(useBookingStore());
-const { getBookings } = useBookingStore()
+const {Profile} = storeToRefs(useProfileStore());
+const { getProfile } = useProfileStore()
 
-onMounted(() => getBookings())
+onMounted(() => getProfile())
 </script>
 
 <template>
 
   <main>
-    <h2>Профиль</h2>
-    <div>
-      <profile-form/>
-    </div>
+    <h2 class="flex items-center">Профиль <router-link to="/profile/edit" class="text-xs text-blue-700 ml-10">Редактировать профиль</router-link> </h2>
     <div class="grid-list my-6">
       <CatalogProfileListItem
-          v-for="(book, index) in bookings"
+          v-for="(user, index) in Profile"
           :key="index"
-          :id="book.id"
-          :price="book.price"
-          :title="book.title"
+          :booking_id ="user.booking_id"
+          :room="user.room"
+          :pets="user.pets"
+          :check_in="user.check_in"
+          :check_out="user.check_out"
+          :approved="user.approved"
       />
     </div>
 

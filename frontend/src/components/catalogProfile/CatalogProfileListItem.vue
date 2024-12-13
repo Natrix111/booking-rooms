@@ -1,29 +1,48 @@
 <script setup>
-import {useBookingStore} from "@/stores/booking-store.js";
+import {useProfileStore} from "@/stores/user-profile-store.js";
+import {array} from "yup";
 
 defineProps({
-  id: {
+  booking_id: {
     type: Number,
     default: null
   },
-  title: {
+  room: {
     type: String,
     default: ''
   },
-  price: {
-    type: Number,
-    default: 0
+  pets: {
+    type: array,
+    default: ''
+  },
+  check_in: {
+    type: String,
+    default: ''
+  },
+  check_out: {
+    type: String,
+    default: ''
+  },
+  approved: {
+    type: Boolean,
+    default: false
   }
+
+
 })
 
-const { deleteBook } = useBookingStore()
+const { deleteProfile } = useProfileStore()
+
+
 </script>
 
 <template>
   <article class="item">
-    <h3>{{ title }}</h3>
-    <p>Цена: {{ price }} </p>
-    <button @click="deleteBook(id)">Удалить</button>
+    <h3>{{ room }}</h3>
+    <p>питомцы: <p v-for="(pet, index) in pets" >{{++index}} {{ pet }}</p> </p>
+    <p>Дата въезда: {{ check_in }}</p>
+    <p>Дата выезда: {{ check_out }}</p>
+    <button class="button button-blue" v-if="!approved" @click="deleteProfile(booking_id)">Удалить</button>
   </article>
 </template>
 

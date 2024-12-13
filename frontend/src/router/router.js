@@ -7,6 +7,7 @@ import ProfilePage from "@/pages/ProfilePage.vue";
 import RoomViewPage from "@/pages/RoomViewPage.vue";
 import RoomCreatePage from "@/pages/RoomCreatePage.vue";
 import RegisterPage from "../pages/RegisterPage.vue";
+import EditProfilePage from "@/pages/EditProfilePage.vue";
 
 
 const routes = [
@@ -17,6 +18,7 @@ const routes = [
     { path: '/login', component: AuthorizationPage },
     { path: '/register', component: RegisterPage },
     { path: '/profile', component: ProfilePage },
+    { path: '/profile/edit', component: EditProfilePage },
 ]
 
 const router = createRouter({
