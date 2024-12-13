@@ -193,7 +193,7 @@ const validateForm = () => {
 const submitRoomForm = async () => {
   if (!validateForm()) return
 
-  isLoading.value = 'true'
+  isLoading.value = true
 
   const formData = new FormData()
 
@@ -216,7 +216,7 @@ const submitRoomForm = async () => {
     const data = await createRoom(formData)
     await getRooms()
 
-    idCreatedRoom.value = data.id
+    idCreatedRoom.value = data?.id
 
     isCreate.value = true
     resetForm()
