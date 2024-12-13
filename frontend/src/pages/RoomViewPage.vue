@@ -1,17 +1,18 @@
 <template>
-  <h2
-      v-if="isLoading"
-      class="text-center">Загрузка</h2>
-  <LoadSpinner v-if="isLoading" class="m-auto h-10 w-10"/>
+  <main  v-if="isLoading">
+    <h2 class="text-center">Загрузка</h2>
+    <LoadSpinner class="m-auto h-10 w-10" />
+  </main>
   <main v-else>
     <div>
       <section class="room">
         <div class="w-full md:w-1/2">
           <div class="slider">
             <img
-                :src="currentImage ?`${storageUrl}${currentImage}` : defaultPreview"
+                :src="currentImage ? `${storageUrl}${currentImage}` : defaultPreview"
                 class="current-image"
-                alt="Main Image">
+                alt="Main Image"
+            />
             <div class="slider-items">
               <img
                   v-for="(image, index) in room.room.photos"
@@ -29,34 +30,40 @@
           <h2 class="mb-2">{{ room.room.name }}</h2>
           <p><strong>Цена:</strong> {{ room.room.price }} руб/сутки</p>
           <p><strong>Площадь:</strong> {{ room.room.area }} м²</p>
-          <p title="Ширина х Длина х Высота"><strong>Размеры:</strong> {{ room.room.dimensions[0] }}х{{room.room.dimensions[1]}}х{{room.room.dimensions[2]}}</p>
+          <p title="Ширина х Длина х Высота">
+            <strong>Размеры:</strong>
+            {{ room.room.dimensions[0] }}х{{ room.room.dimensions[1] }}х{{ room.room.dimensions[2] }}
+          </p>
           <p class="pb-2">
-            <strong>Оснащение: </strong>
+            <strong>Оснащение:</strong>
             <ul class="amenities-list">
               <li
                   v-for="amenity in room.room.amenities"
                   :key="amenity.name"
-                  class="amenities-item">
+                  class="amenities-item"
+              >
                 <img
                     :title="amenity.name"
                     :src="`${storageUrl}${amenity.img}`"
-                    class="icon">
+                    class="icon"
+                />
                 <span>&nbsp;- {{ amenity.name }}</span>
               </li>
             </ul>
-
-
           </p>
-          <button class="button button-blue w-1/2 mt-8">Забронировать</button>
+          <my-button @click="openBookingModal" class="button-blue w-1/2">
+            Забронировать
+          </my-button>
         </div>
       </section>
 
       <section>
         <h2 class="mb-4">Другие номера</h2>
-        <CatalogRoomsList :rooms="room.otherRooms"/>
+        <CatalogRoomsList :rooms="room.otherRooms" />
       </section>
-    </div>
 
+      <ModalBookingRoom v-model="isBookingModalOpen" />
+    </div>
   </main>
 </template>
 
@@ -67,15 +74,18 @@ import CatalogRoomsList from "@/components/catalogRooms/CatalogRoomsList.vue";
 import { useRoute } from "vue-router";
 import defaultPreview from "@/assets/image/catalogRooms/default-preview.jpg"
 import {storageUrl} from "@/api/api.js";
-import LoadSpinner from "../components/UI/LoadSpinner.vue";
+import LoadSpinner from "@/components/UI/LoadSpinner.vue";
+import MyButton from "@/components/UI/MyButton.vue";
+import ModalBookingRoom from "@/components/form/ModalBookingRoom.vue";
 
 const { getRoomById } = useCatalogRoomsStore();
 
 const room = ref({});
-const isLoading = ref(true)
 const currentImage = ref('')
+const isLoading = ref(true)
+const isBookingModalOpen = ref(false)
 
-const route = useRoute();
+const route = useRoute()
 
 const loadRoomData = async () => {
   room.value = await getRoomById(route.params.id)
@@ -84,6 +94,10 @@ const loadRoomData = async () => {
 
 const setCurrentImage = (image) => {
   currentImage.value = image
+}
+
+const openBookingModal = () => {
+  isBookingModalOpen.value = true
 }
 
 onMounted(async () => {
