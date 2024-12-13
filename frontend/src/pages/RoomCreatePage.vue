@@ -121,10 +121,10 @@
 import { ref, onMounted } from 'vue'
 import {storeToRefs} from 'pinia'
 import {useCatalogRoomsStore} from '@/stores/catalog-rooms-store.js'
-import {api} from "@/api/api.js";
 import { useRouter } from 'vue-router'
 import MyButton from "@/components/UI/MyButton.vue";
 import LoadSpinner from "@/components/UI/LoadSpinner.vue";
+import {createRoom} from "@/api/rooms.js";
 
 const {filters: filtersList} = storeToRefs(useCatalogRoomsStore())
 const {getRooms, getFilters} = useCatalogRoomsStore()
@@ -213,13 +213,7 @@ const submitRoomForm = async () => {
   })
 
   try {
-    const {data} = await api.post('rooms', formData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-
+    const data = await createRoom(formData)
     await getRooms()
 
     idCreatedRoom.value = data.id
@@ -229,7 +223,6 @@ const submitRoomForm = async () => {
 
   } catch (error) {
     console.error(error)
-    isLoading.value = false
   } finally {
     isLoading.value = false
   }
