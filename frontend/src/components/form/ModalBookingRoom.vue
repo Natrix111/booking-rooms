@@ -42,6 +42,9 @@
           />
           <ErrorMessage name="endDate" class="error" />
         </div>
+        <div v-if="Object.keys(errorsFromApi).length > 0">
+          <p v-for="error in errorsFromApi" class="error">{{ error }}</p>
+        </div>
         <div class="flex space-x-4 items-center">
           <my-button class="button-blue">Отправить заявку</my-button>
           <my-button @click.prevent="closeBookingModal" class="button-grey">
@@ -69,6 +72,7 @@ const booking = ref({ startDate: "", endDate: "" })
 
 const pets = ref([{ name: "" }])
 const petsErrors = ref([])
+const errorsFromApi = ref([])
 
 const route = useRoute()
 
@@ -123,7 +127,7 @@ const submitBookingForm = async () => {
 
   } catch (error) {
     console.error(error)
-    console.error(error?.response?.data)
+    errorsFromApi.value = error.response?.data
   } finally {
     isLoadingBookingRooms.value = false
   }
