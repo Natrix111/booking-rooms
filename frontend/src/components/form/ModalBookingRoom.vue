@@ -1,9 +1,10 @@
 <template>
   <div
+      @click="closeBookingModal"
       v-if="isBookingModalOpen"
       class="booking-modal"
   >
-    <div class="bg-white p-6 rounded shadow-lg w-1/2">
+    <div @click.stop class="booking-modal-content">
       <h3 class="text-center mb-4">Бронирование номера</h3>
       <Form @submit="submitBookingForm" :validation-schema="bookingSchema" class="space-y-4">
         <div v-for="(pet, index) in pets" :key="index" class="space-y-4">
@@ -100,6 +101,7 @@ const bookingSchema = object({
 
 const closeBookingModal = () => {
   isBookingModalOpen.value = false
+  resetForm()
 }
 
 const submitBookingForm = async () => {
@@ -140,11 +142,21 @@ const validatePetName = (value, index) => {
 
   petsErrors.value[index] = errorMessage ? errorMessage : null
 }
+
+const resetForm = () => {
+  pets.value = [{ name: "" }]
+  petsErrors.value = []
+  booking.value = { startDate: "", endDate: "" }
+}
 </script>
 
 <style scoped>
 .booking-modal {
   @apply fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center;
+}
+
+.booking-modal-content {
+  @apply bg-white p-6 rounded shadow-lg w-1/2;
 }
 
 .error {
