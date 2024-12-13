@@ -3,6 +3,7 @@ import {reactive} from "vue";
 import {useAuthStore} from '@/stores/auth-store'
 import {useRouter} from "vue-router";
 import MyButton from "@/components/UI/MyButton.vue";
+import {toast} from "vue3-toastify";
 
 const router = useRouter()
 
@@ -17,9 +18,10 @@ const {getAuth} = useAuthStore()
 
 <template>
   <form class="flex flex-col gap-5 items-center	"
-        @submit.prevent="getAuth(loginData.email, loginData.password).then((bool) => {
+        @submit.prevent="getAuth(loginData.email, loginData.password).then(async (bool) => {
           if (bool) {
-            router.push('/profile')
+            await router.push('/profile')
+            toast.success('Вы успешно вошли в аккаунт!')
           }
         })">
     <input type="email" v-model="loginData.email" class="text-xl p-5 size-6/12 border rounded px-3 py-2">

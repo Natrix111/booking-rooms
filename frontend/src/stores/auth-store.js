@@ -3,6 +3,7 @@ import {computed, ref} from 'vue'
 import {getAuthFromApi, logoutFromApi} from "@/api/auth.js";
 import {useRouter} from "vue-router";
 import {registerFromApi} from "@/api/auth.js";
+import {toast} from "vue3-toastify";
 
 export const useAuthStore = defineStore('AuthStore', () => {
     const token = ref(localStorage.getItem('token') || null);
@@ -18,19 +19,23 @@ export const useAuthStore = defineStore('AuthStore', () => {
 
             return true
         } catch (error) {
+            toast.error('Что то пошло не так. Попробуйте еще раз.')
             console.error(error);
         }
     }
 
     const logout = async () => {
         try {
+            toast.info('Выход из аккаунта. Пожалуйста, подождите.')
+
             await logoutFromApi(token.value)
 
             localStorage.removeItem('token')
             token.value = null
 
-            router.push('/')
+            await router.push('/')
 
+            toast.info('Вы вышли из аккаунта')
         } catch (error) {
             console.error(error);
         }
@@ -46,10 +51,12 @@ export const useAuthStore = defineStore('AuthStore', () => {
             user.value = data.user
             localStorage.setItem('user', user.value)
 
-            router.push('/profile')
+            await router.push('/profile')
 
+            toast.success('Вы успешно зарегистрировались и вошли в аккаунт!')
 
         } catch (error) {
+            toast.error('Что то пошло не так. Попробуйте еще раз.')
             throw error
         }
     }

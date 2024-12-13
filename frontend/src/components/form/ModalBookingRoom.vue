@@ -65,6 +65,7 @@ import LoadSpinner from "@/components/UI/LoadSpinner.vue";
 import MyButton from "@/components/UI/MyButton.vue";
 import {bookingRooms} from "@/api/rooms.js";
 import {useRoute} from "vue-router";
+import {toast} from "vue3-toastify";
 
 const isLoadingBookingRooms = ref(false)
 const isBookingModalOpen = defineModel()
@@ -123,9 +124,12 @@ const submitBookingForm = async () => {
     }
 
     const data = await bookingRooms(formData)
+    toast.success('Номер забронирован!')
+    toast.info('Подробную информацию можете посмотреть в профиле.')
     closeBookingModal()
 
   } catch (error) {
+    toast.error('Что то пошло не так. Попробуйте еще раз.')
     console.error(error)
     errorsFromApi.value = error.response?.data
   } finally {

@@ -125,6 +125,7 @@ import { useRouter } from 'vue-router'
 import MyButton from "@/components/UI/MyButton.vue";
 import LoadSpinner from "@/components/UI/LoadSpinner.vue";
 import {createRoom} from "@/api/rooms.js";
+import {toast} from "vue3-toastify";
 
 const {filters: filtersList} = storeToRefs(useCatalogRoomsStore())
 const {getRooms, getFilters} = useCatalogRoomsStore()
@@ -219,9 +220,11 @@ const submitRoomForm = async () => {
     idCreatedRoom.value = data?.id
 
     isCreate.value = true
+    toast.success('Номер успешно создан!')
     resetForm()
 
   } catch (error) {
+    toast.error('Что то пошло не так. Попробуйте еще раз.')
     console.error(error)
   } finally {
     isLoading.value = false
