@@ -42,7 +42,7 @@ const { deleteProfile } = useProfileStore()
     <p>питомцы: <p v-for="(pet, index) in pets" >{{++index}} {{ pet }}</p> </p>
     <p>Дата въезда: {{ check_in }}</p>
     <p>Дата выезда: {{ check_out }}</p>
-    <button class="button button-blue" v-if="!approved" @click="deleteProfile(booking_id)">Удалить</button>
+    <button class="button button-blue" v-if="approved" @click="deleteProfile(booking_id)">Удалить</button>
   </article>
 </template>
 
